@@ -16,6 +16,7 @@ using System.Threading;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Reflection;
+using Microsoft.Win32;
 
 namespace AdminTools {
     public partial class ParentReport : Window {
@@ -317,6 +318,7 @@ namespace AdminTools {
         private void btn_Save_Click(object sender, RoutedEventArgs e) {
             if (this.reportLoaded && this.table.Rows.Count > 0) {
                 SaveFile();
+                /*
                 var row = this.table.NewRow();
                 row["Event Type"] = "Total Price: ";
                 row["Total"] = lbl_TotalDueValue.Content;
@@ -329,6 +331,7 @@ namespace AdminTools {
                 PdfDocument pdf = pdfCreator.CreatePDF(this.table.Rows.Count * 4);
                 pdf.AddPage();
                 pdfCreator.SavePDF(pdf);
+                */
             } else {
                 WPFMessageBox.Show("You must load a report before you can save one!");
             }
@@ -348,104 +351,70 @@ namespace AdminTools {
         private void SaveFile()
         {
             string path = Directory.GetCurrentDirectory();
+            //string dTop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //string fileName = dTop + "\\test.doc";
+            //string textToAdd = "Example text in file";
 
-            /*
-            string temp = Directory.GetParent(path).ToString();
-            path = Directory.GetParent(temp).ToString();
-            MessageBox.Show(path);
-            temp = Directory.GetParent(path).ToString();
-            path = Directory.GetParent(temp).ToString();
-            path = Directory.GetParent(temp).ToString();
-            
-            MessageBox.Show(path);
-            GrantAccess(path);
-            File.Create($@"{path}\HEREI'MRIGHTHERE!!!.txt");
-
-            path = $@"{path}\HEREI'MRIGHTHERE!!!.txt";
-
-            File.SetAttributes($@"{path}\HEREI'MRIGHTHERE!!!.txt", FileAttributes.Normal);
-
-            string fileName = "test.txt";
-            string textToAdd = "Example text in file";
-            FileStream fs = null;
-            */
-            string dTop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string fileName = dTop + "\\test.doc";
-            string textToAdd = "Example text in file";
-            FileStream fs = null;
-            try
+            SaveFileDialog dialog = new SaveFileDialog()
             {
-                fs = new FileStream(fileName, FileMode.OpenOrCreate);
-                using (StreamWriter writer = new StreamWriter(fs))
+                FileName = "report",
+                DefaultExt = ".doc",
+            };
+            if(dialog.ShowDialog() == true)
+            {
+                FileStream fs = null;
+                string fileName = dialog.FileName;
+                try
                 {
-                    for (int i = 0; i < this.table.Rows.Count; i++)
+                    //fs = new FileStream(fileName, FileMode.OpenOrCreate);
+                    //using (StreamWriter writer = new StreamWriter(fs))
+                    using(StreamWriter writer = new StreamWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
                     {
-                        string resultBuilder = "";
-                        DataRow row = this.table.Rows[i];
-                        resultBuilder += "Date: " +row["Date"]
-                        + " First: " + row["First"]
-                        + " Last: " + row["Last"]
-                        + " Event Type: " + row["Event Type"]
-                        + " Check In: " + row["Check In"]
-                        + " Check Out: " + row["Check Out"]
-                        + " Total: " + row["Total"];
-                        writer.WriteLine("\n" +resultBuilder + "\n");
+                        for (int i = 0; i < this.table.Rows.Count; i++)
+                        {
+                            string resultBuilder = "";
+                            DataRow row = this.table.Rows[i];
+                            resultBuilder += "Date: " + row["Date"]
+                            + " First: " + row["First"]
+                            + " Last: " + row["Last"]
+                            + " Event Type: " + row["Event Type"]
+                            + " Check In: " + row["Check In"]
+                            + " Check Out: " + row["Check Out"]
+                            + " Total: " + row["Total"];
+                            writer.WriteLine("\n" + resultBuilder + "\n");
 
-                        
 
-                        /*
-                        DataRow row = this.table.Rows[i];
-                        var cols = row.GetChildRows()
-                        string info = row["Event Type"];
-                        */
+
+                            /*
+                            DataRow row = this.table.Rows[i];
+                            var cols = row.GetChildRows()
+                            string info = row["Event Type"];
+                            */
+                        }
                     }
                 }
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                var attr = new FileInfo(path).Attributes;
-                MessageBox.Show("Unauthorized Access");
-
-                if ((attr & FileAttributes.ReadOnly) > 0)
+                catch (UnauthorizedAccessException e)
                 {
-                    MessageBox.Show("This is read-only");
+                    var attr = new FileInfo(path).Attributes;
+                    MessageBox.Show("Unauthorized Access");
+
+                    if ((attr & FileAttributes.ReadOnly) > 0)
+                    {
+                        MessageBox.Show("This is read-only");
+                    }
+
+                    MessageBox.Show(e.Message);
                 }
-
-                MessageBox.Show(e.Message);
-            }
-            finally
-            {
-                if (fs != null)
-                    fs.Dispose();
-            }
-            /*
-            try
-            {
-                fs = new FileStream(path, FileMode.CreateNew);
-                using (StreamWriter writer = new StreamWriter(fs))
+                finally
                 {
-                    writer.Write(textToAdd);
+                    if (fs != null)
+                        fs.Dispose();
                 }
             }
-            catch(UnauthorizedAccessException e)
+            else
             {
-                var attr = new FileInfo(path).Attributes;
-                MessageBox.Show("Unauthorized Access");
-
-                if((attr & FileAttributes.ReadOnly) > 0)
-                {
-                    MessageBox.Show("This is read-only");
-                }
-
-                MessageBox.Show(e.Message);
-            }
-            finally
-            {
-                if (fs != null)
-                    fs.Dispose();
-            }
-            */
-            //var row = this.table.Rows[0];
+                WPFMessageBox.Show("dialog.ShowDialog() == false");
+            }         
         }
     }
 }
