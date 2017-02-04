@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Users\micah\Documents\GitHub\Senior-Project-Childcare-Application\ChildcareApplication\WPFMessageBox\obj\Debug\
+C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\WPFMessageBox\obj\Debug\
 MessageBoxUtils
 none
 false
@@ -12,9 +12,9 @@ DEBUG;TRACE
 
 31282211973
 
-12-1652624164
+12-966989460
 13-1012886045
 Themes\GlassButton.xaml;Themes\Generic.xaml;WPFMessageBoxWindow.xaml;
 
-True
+False
 
