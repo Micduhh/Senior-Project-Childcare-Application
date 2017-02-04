@@ -1,4 +1,4 @@
 # Senior-Project-Childcare-Application
 
 # Contributing to the Project
-Please see the Contributing.md file for information on how to contribute.  READ IT BEFORE YOU CONTRIBUTE!!!!!!
+Please click [here](Contributing.md) to see how to contribute to the project.  READ IT BEFORE YOU CONTRIBUTE!!!!!!
