@@ -34,7 +34,7 @@ When you feel that the issue has been fixed, update your forks master and then c
 the main projects repository.  Please have a brief, yet concise title, along with a description of what was worked on.
 
 ### Warning
-DO NOT PUSH STRAIGHT TO THE DEVELOPMENT 
+DO NOT PUSH STRAIGHT TO THE DEVELOPMENT BRANCH
 
 Since the development branch is the branch that we get all of our working copies, we need it to be as secure as possible.  Only use a
 Pull Request to get the changes there.
