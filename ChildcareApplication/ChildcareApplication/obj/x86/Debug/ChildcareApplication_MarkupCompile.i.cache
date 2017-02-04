@@ -13,8 +13,8 @@ C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\A
 26-1355146381
 
 53233870326
-28947069965
+271391294168
 AboutWindow.xaml;AdminTools\AdminAddEdit.xaml;AdminTools\AdminChangeGuardianPIN.xaml;AdminTools\SelectGuardian.xaml;AdminTools\AdminLogin.xaml;AdminTools\ApplicationSettings.xaml;AdminTools\EditTransactionWindow.xaml;AdminTools\BusinessReport.xaml;AdminTools\LinkExistingChild.xaml;AdminTools\ParentReport.xaml;AdminTools\AdminMenu.xaml;AdminTools\NewParentLogin.xaml;AdminTools\AdminEditParentInfo.xaml;AdminTools\AdminEditChildInfo.xaml;AdminTools\EventManager.xaml;AdminTools\AddEditEventWindow.xaml;AdminTools\Link_DeLinkChild.xaml;AdminTools\ParentIDEntry.xaml;AdminTools\PaymentEntry.xaml;AdminTools\RestoreRecords.xaml;AdminTools\TransactionModificationWindow.xaml;GlassButton.xaml;GuardianTools\AdminChildCheckIn.xaml;GuardianTools\ChildLoginWindow.xaml;GuardianTools\GuardianCheckIn.xaml;UserTypeSelection.xaml;
 
-False
+True
 
