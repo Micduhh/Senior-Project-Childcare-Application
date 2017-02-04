@@ -1,8 +1,0 @@
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\bin\Debug\ChildcareApplication.DatabaseController.dll
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\bin\Debug\ChildcareApplication.DatabaseController.pdb
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\bin\Debug\System.Data.SQLite.dll
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\obj\Debug\ChildcareApplication.DatabaseController.csprojResolveAssemblyReference.cache
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\obj\Debug\ChildcareApplication.DatabaseController.dll
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\obj\Debug\ChildcareApplication.DatabaseController.pdb
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\bin\Debug\WPFMessageBox.dll
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication.DatabaseController\bin\Debug\WPFMessageBox.pdb

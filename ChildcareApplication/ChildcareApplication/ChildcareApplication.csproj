@@ -362,10 +362,6 @@
     <Resource Include="SpokaneClubIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChildcareApplication.DatabaseController\ChildcareApplication.DatabaseController.csproj">
-      <Project>{30a770e7-73e0-4e01-a429-ca6feb3c5c22}</Project>
-      <Name>ChildcareApplication.DatabaseController</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFMessageBox\WPFMessageBox.csproj">
       <Project>{53f2d809-3e1a-422d-a507-abcb407ebf29}</Project>
       <Name>WPFMessageBox</Name>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26127.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChildcareApplication", "ChildcareApplication\ChildcareApplication.csproj", "{979F41A0-8DD0-415D-AB4F-9D50EE979F25}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -18,8 +18,6 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "ChildcareInstaller", "Child
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFMessageBox", "WPFMessageBox\WPFMessageBox.csproj", "{53F2D809-3E1A-422D-A507-ABCB407EBF29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChildcareApplication.DatabaseController", "ChildcareApplication.DatabaseController\ChildcareApplication.DatabaseController.csproj", "{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,26 +123,6 @@ Global
 		{53F2D809-3E1A-422D-A507-ABCB407EBF29}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{53F2D809-3E1A-422D-A507-ABCB407EBF29}.SingleImage|x86.ActiveCfg = Debug|Any CPU
 		{53F2D809-3E1A-422D-A507-ABCB407EBF29}.SingleImage|x86.Build.0 = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.CD_ROM|x86.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.CD_ROM|x86.Build.0 = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Debug|x86.Build.0 = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.DVD-5|x86.ActiveCfg = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.DVD-5|x86.Build.0 = Debug|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Release|x86.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.Release|x86.Build.0 = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.SingleImage|x86.ActiveCfg = Release|Any CPU
-		{30A770E7-73E0-4E01-A429-CA6FEB3C5C22}.SingleImage|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
