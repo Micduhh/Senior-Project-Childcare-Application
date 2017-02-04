@@ -12,8 +12,7 @@ to team contribution.  All pull requests will come to this branch, and all check
 
 ### The Master Branch
 This is the "final" version of the application.  This branch should only contain the version of the application that we
-would give to the client.  Essentially, this is the "final" version of the application and it is the one branch that shall be strictly
-guarded.
+would give to the client. 
 
 # Code Contribution Process
 To contribute to the program, please follow the following steps to insure that the latest changes are pushed up, and ensuring
@@ -43,5 +42,8 @@ Pull Request to get the changes there.
 DO NOT ACCEPT YOUR OWN PULL REQUEST TO THE DEVELOPMENT BRANCH ON THE MAIN REPOSITORY.  If you are working on your own fork, you can do
 as you please in regards to pushing to your own local branches.  But, please do not push to the development branch until we have all
 given it the all-clear.
+
+## Pushing to the Master branch
+The master branch contains the version of the application that we would consider "final".  This is the version of the application that we would eventually give our client.  Since it is the main version of the app, we need to lock it down really, really, really, REALLY hard.  We will NEVER push to this branch UNTIL we have the CONSENT OF EVERYONE.  In order to do this, we need to ensure that the development branch is in the state that we want it in.  The branch should have all of the features that the client has requested.  Once we have come to an agreement on pushing to master, we shall do so.
 
 ## More Information soon
