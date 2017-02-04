@@ -568,8 +568,6 @@ C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\o
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AdminMenu.baml
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\NewParentLogin.baml
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AdminEditParentInfo.baml
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EditEvents.baml
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EventModificationWindow.baml
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\Link_DeLinkChild.baml
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\ParentIDEntry.baml
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\PaymentEntry.baml
@@ -594,8 +592,6 @@ C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\o
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\NewParentLogin.g.cs
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AdminEditParentInfo.g.cs
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AdminEditChildInfo.g.cs
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EditEvents.g.cs
-C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EventModificationWindow.g.cs
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\Link_DeLinkChild.g.cs
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\ParentIDEntry.g.cs
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\PaymentEntry.g.cs
@@ -617,3 +613,7 @@ C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\o
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\ChildcareApplication.csproj.GenerateResource.Cache
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\ChildcareApplication.exe
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\ChildcareApplication.pdb
+C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AddEditEventWindow.baml
+C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\AddEditEventWindow.g.cs
+C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EventManager.baml
+C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareApplication\obj\x86\Debug\AdminTools\EventManager.g.cs
