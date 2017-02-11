@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChildcareApplication", "ChildcareApplication\ChildcareApplication.csproj", "{979F41A0-8DD0-415D-AB4F-9D50EE979F25}"
 	ProjectSection(ProjectDependencies) = postProject

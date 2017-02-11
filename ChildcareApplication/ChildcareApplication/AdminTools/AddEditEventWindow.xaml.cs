@@ -224,6 +224,12 @@ namespace AdminTools {
                 txt_MaxHours.Focus();
                 return false;
             }
+            if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the OTime Price box");
+                tbx_OvertimeRate.Focus();
+            }
+
             return true;
         }
 
@@ -395,6 +401,11 @@ namespace AdminTools {
             if (e.Key == Key.Enter) {
                 txt_Rate.Focus();
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.valueChanged = true;
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) {

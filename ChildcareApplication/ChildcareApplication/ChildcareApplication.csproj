@@ -237,11 +237,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AdminTools\EditEvents.xaml">
+    <Page Include="AdminTools\EventManager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AdminTools\EventModificationWindow.xaml">
+    <Page Include="AdminTools\AddEditEventWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -300,11 +300,11 @@
     <Compile Include="AdminTools\AdminEditChildInfo.xaml.cs">
       <DependentUpon>AdminEditChildInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AdminTools\EditEvents.xaml.cs">
-      <DependentUpon>EditEvents.xaml</DependentUpon>
+    <Compile Include="AdminTools\EventManager.xaml.cs">
+      <DependentUpon>EventManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AdminTools\EventModificationWindow.xaml.cs">
-      <DependentUpon>EventModificationWindow.xaml</DependentUpon>
+    <Compile Include="AdminTools\AddEditEventWindow.xaml.cs">
+      <DependentUpon>AddEditEventWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdminTools\Link_DeLinkChild.xaml.cs">
       <DependentUpon>Link_DeLinkChild.xaml</DependentUpon>
