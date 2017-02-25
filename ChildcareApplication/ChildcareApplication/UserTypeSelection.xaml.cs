@@ -1,4 +1,5 @@
 ﻿using AdminTools;
+using ChildcareApplication.DatabaseController;
 using GuardianTools;
 using MessageBoxUtils;
 using System;
@@ -14,6 +15,7 @@ namespace ChildcareApplication {
         public UserSelection() {
             InitializeComponent();
             this.MouseDown += WindowMouseDown;
+            
         }
 
         private void btn_ParentUse_Click(object sender, RoutedEventArgs e) {

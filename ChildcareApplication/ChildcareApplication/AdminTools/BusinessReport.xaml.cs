@@ -1,10 +1,12 @@
 ﻿using ChildcareApplication.DatabaseController;
 using DatabaseController;
 using MessageBoxUtils;
+using Microsoft.Win32;
 using PdfSharp.Pdf;
 using System;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -324,12 +326,66 @@ namespace AdminTools {
         }
 
         private void btn_Save_Click(object sender, RoutedEventArgs e) {
-            if (this.reportLoaded && this.table.Rows.Count > 0) {
-                PDFCreator pdfCreator = new PDFCreator(this.table);
-                PdfDocument pdf = pdfCreator.CreatePDF(this.businessDataGrid.Columns.Count);
-                pdfCreator.SavePDF(pdf);
-            } else {
+            if (this.reportLoaded && this.table.Rows.Count > 0)
+            {
+                SaveFile();
+            }
+            else
+            {
                 WPFMessageBox.Show("You must load a report before you can save one!");
+            }
+        }
+
+        private void SaveFile()
+        {
+            string path = Directory.GetCurrentDirectory();
+
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                FileName = "Business Report",
+                DefaultExt = ".doc",
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                FileStream fs = null;
+                string fileName = dialog.FileName;
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(new FileStream(fileName, FileMode.OpenOrCreate)))
+                    {
+                        for (int i = 0; i < this.table.Rows.Count; i++)
+                        {
+                            string resultBuilder = "";
+                            DataRow row = this.table.Rows[i];
+                            resultBuilder += " First Name: " + row["First Name"]
+                            + " Last Name: " + row["Last Name"]
+                            + " Event Type: " + row["Event Name"]
+                            + " Charges: " + row["Charges"]
+                            + " Current Due: " + row["Current Due"];
+                            writer.WriteLine("\n" + resultBuilder + "\n");
+                        }
+                    }
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    var attr = new FileInfo(path).Attributes;
+
+                    if ((attr & FileAttributes.ReadOnly) > 0)
+                    {
+                        MessageBox.Show("This is read-only");
+                    }
+
+                    MessageBox.Show(e.Message);
+                }
+                finally
+                {
+                    if (fs != null)
+                        fs.Dispose();
+                }
+            }
+            else
+            {
+                WPFMessageBox.Show("dialog.ShowDialog() == false");
             }
         }
 

@@ -316,23 +316,12 @@ namespace AdminTools {
         }
 
         private void btn_Save_Click(object sender, RoutedEventArgs e) {
-            if (this.reportLoaded && this.table.Rows.Count > 0) {
+            if (this.reportLoaded && this.table.Rows.Count > 0)
+            {
                 SaveFile();
-                /*
-                var row = this.table.NewRow();
-                row["Event Type"] = "Total Price: ";
-                row["Total"] = lbl_TotalDueValue.Content;
-                this.table.Rows.Add(row);
-
-               //  MessageBox.Show($"DataTable: {this.table.Rows.Count}\nDataGrid: {parentDataGrid.Columns.Count}");
-
-                PDFCreator pdfCreator = new PDFCreator(this.table);
-                //PdfDocument pdf = pdfCreator.CreatePDF(this.parentDataGrid.Columns.Count);
-                PdfDocument pdf = pdfCreator.CreatePDF(this.table.Rows.Count * 4);
-                pdf.AddPage();
-                pdfCreator.SavePDF(pdf);
-                */
-            } else {
+            }
+            else
+            {
                 WPFMessageBox.Show("You must load a report before you can save one!");
             }
         }

@@ -43,7 +43,7 @@ namespace AdminTools {
         private void btn_EditEvent_Click(object sender, RoutedEventArgs e) {
             if (cmd_EventIDCombo.SelectedIndex != -1) {
                 String test = ((ComboBoxItem)cmd_EventIDCombo.SelectedItem).Content.ToString();
-                EventModificationWindow win = new EventModificationWindow(test);
+                AddEditEventWindow win = new AddEditEventWindow(test);
                 win.Show();
                 this.Close();
             } else {
@@ -73,7 +73,7 @@ namespace AdminTools {
         }
 
         private void btn_AddEvent_Click(object sender, RoutedEventArgs e) {
-            EventModificationWindow win = new EventModificationWindow();
+            AddEditEventWindow win = new AddEditEventWindow();
             win.Show();
             this.Close();
         }
