@@ -8,18 +8,18 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace AdminTools {
-    public partial class EventModificationWindow : Window {
+    public partial class AddEditEventWindow : Window {
         private bool valueChanged, maxHoursChanged;
         String oldEventName;
 
-        public EventModificationWindow() {
+        public AddEditEventWindow() {
             InitializeComponent();
             valueChanged = false;
             maxHoursChanged = false;
             this.MouseDown += WindowMouseDown;
         }
 
-        public EventModificationWindow(String oldEventName) {
+        public AddEditEventWindow(String oldEventName) {
             InitializeComponent();
             LoadData(oldEventName);
             valueChanged = false;

@@ -333,6 +333,10 @@ namespace AdminTools {
             }
         }
 
+        /*
+         * 
+         */
+
         private void btn_GetCurrentDay_Click(object sender, RoutedEventArgs e) {
             var month = int.Parse(DateTime.Now.Month.ToString());
             var day = int.Parse(DateTime.Now.Day.ToString());

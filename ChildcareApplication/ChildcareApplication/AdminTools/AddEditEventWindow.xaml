@@ -1,11 +1,11 @@
-﻿<Window x:Class="AdminTools.EventModificationWindow"
+﻿<Window x:Class="AdminTools.AddEditEventWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="win_EventModificationWindow" Height="412.75" Width="420" 
+        Title="win_AddEditEventWindow" Height="412.75" Width="420" 
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="LightBlue" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True" HorizontalAlignment="Right" Width="420">
         <Grid Margin="-1,-2,-2,0" HorizontalAlignment="Right" Width="419">
             <Label x:Name="lbl_EventMaxHours" Content="2 Time" HorizontalAlignment="Right" Margin="0,256,271,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
