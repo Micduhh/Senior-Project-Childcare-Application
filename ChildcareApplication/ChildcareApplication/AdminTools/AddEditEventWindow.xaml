@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen" Background="LightBlue">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True" HorizontalAlignment="Right" Width="420">
         <Grid Margin="-1,-2,-2,0" HorizontalAlignment="Right" Width="419">
-            <Label x:Name="lbl_EventMaxHours" Content="2 Time" HorizontalAlignment="Right" Margin="0,226,271,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
+            <Label x:Name="lbl_EventMaxHours" Content="2 Time" HorizontalAlignment="Right" Margin="0,256,271,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
             <ComboBox x:Name="cmb_PriceType" HorizontalAlignment="Right" Margin="0,100,255,0" VerticalAlignment="Top" Width="136" TabIndex="1" SelectionChanged="cmb_SelectionChanged" KeyUp="cmb_PriceType_KeyUp" FontSize="14" ToolTip="How the event should be charged." IsSynchronizedWithCurrentItem="False">
                 <ComboBox.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -36,11 +36,11 @@
             <TextBox x:Name="txt_EventName" Height="25" Margin="28,42,180,0" VerticalContentAlignment="Center" VerticalAlignment="Top" TabIndex="0" TextChanged="DataChanged_Event" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="The Event Name"/>
             <TextBox x:Name="txt_Rate" HorizontalAlignment="Right" VerticalContentAlignment="Center" Height="25" Margin="0,100,57,0" VerticalAlignment="Top" Width="120" TabIndex="2" TextChanged="DataChanged_Event" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="A dollar value for the price of the event (do not include the &quot;$&quot;)."/>
             <Label x:Name="lbl_Rate" Content="Rate:" HorizontalAlignment="Right" Margin="0,72,135,0" VerticalAlignment="Top" Width="42" FontSize="14" RenderTransformOrigin="0.262,1.069"/>
-            <Label x:Name="lbl_DayNum" Content="Day of Month:" HorizontalAlignment="Right" Margin="0,183,97,0" VerticalAlignment="Top" Visibility="Hidden" FontSize="14"/>
-            <TextBox x:Name="txt_DayOfMonth" HorizontalAlignment="Right" VerticalContentAlignment="Center" Height="25" Margin="0,185,28,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" Visibility="Hidden" TextChanged="DataChanged_Event" Background="#FFE6EAE0" TabIndex="6" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" FontSize="14" ToolTip="A numeric value for the day this event is available on."/>
-            <Label x:Name="lbl_MonthNum" Content="Month Number:" HorizontalAlignment="Right" Margin="0,213,93,0" VerticalAlignment="Top" Width="113" Visibility="Hidden" FontSize="14"/>
-            <TextBox x:Name="txt_MonthNum" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="25" Margin="0,215,28,0" Background="#FFE6EAE0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" Visibility="Hidden" TabIndex="6" TextChanged="DataChanged_Event" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" FontSize="14" ToolTip="A numeric value for the month this event is available in."/>
-            <Button Style="{DynamicResource GlassButton}" x:Name="btn_Submit" Content="_Submit" HorizontalAlignment="Left" Margin="213,359,0,0" VerticalAlignment="Top" Width="106" Click="btn_Submit_Click" TabIndex="49" RenderTransformOrigin="0.538,0.483"/>
+            <Label x:Name="lbl_DayNum" Content="Day of Month:" HorizontalAlignment="Right" Margin="0,195,139,0" VerticalAlignment="Top" Visibility="Hidden" FontSize="14"/>
+            <TextBox x:Name="txt_DayOfMonth" HorizontalAlignment="Right" VerticalContentAlignment="Center" Height="25" Margin="0,199,57,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" Visibility="Hidden" TextChanged="DataChanged_Event" Background="#FFE6EAE0" TabIndex="6" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" FontSize="14" ToolTip="A numeric value for the day this event is available on."/>
+            <Label x:Name="lbl_MonthNum" Content="Month Number:" HorizontalAlignment="Right" Margin="0,227,124,0" VerticalAlignment="Top" Width="113" Visibility="Hidden" FontSize="14"/>
+            <TextBox x:Name="txt_MonthNum" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="25" Margin="0,229,57,0" Background="#FFE6EAE0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" Visibility="Hidden" TabIndex="6" TextChanged="DataChanged_Event" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" FontSize="14" ToolTip="A numeric value for the month this event is available in."/>
+            <Button Style="{DynamicResource GlassButton}" x:Name="btn_Submit" Content="_Submit" HorizontalAlignment="Left" Margin="84,380,0,0" VerticalAlignment="Top" Width="106" Click="btn_Submit_Click" TabIndex="49" RenderTransformOrigin="0.538,0.483"/>
             <Label x:Name="lbl_DayName" Content="Day:" HorizontalAlignment="Left" Margin="214,182,0,0" VerticalAlignment="Top" Visibility="Hidden" FontSize="14"/>
             <ComboBox x:Name="cmb_DayName" HorizontalAlignment="Left" Margin="247,183,0,0" VerticalAlignment="Top" Width="120" Visibility="Hidden" TabIndex="9" SelectionChanged="cmb_SelectionChanged" KeyUp="KeyUp_Event" FontSize="14" ToolTip="The day the event is available on.">
                 <ComboBoxItem Content="Sunday"/>
@@ -51,16 +51,16 @@
                 <ComboBoxItem Content="Friday"/>
                 <ComboBoxItem Content="Saturday"/>
             </ComboBox>
-            <Button Style="{DynamicResource GlassButton}" x:Name="btn_Cancel" Content="_Cancel" HorizontalAlignment="Right" Margin="0,359,222,0" VerticalAlignment="Top" Width="106" TabIndex="50" Click="btn_Cancel_Click"/>
+            <Button Style="{DynamicResource GlassButton}" x:Name="btn_Cancel" Content="_Cancel" HorizontalAlignment="Right" Margin="0,380,89,0" VerticalAlignment="Top" Width="106" TabIndex="50" Click="btn_Cancel_Click"/>
             <TextBox x:Name="txt_DiscountPrice" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="25" Margin="0,168,57,0" VerticalAlignment="Top" Width="120" TabIndex="3" TextChanged="DataChanged_Event" GotFocus="txt_GotFocus" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="The rate which is charged when multiple children are checked in.  Leave blank for no discount rate (do not include the &quot;$&quot;)."/>
             <Label x:Name="lbl_Discount" Content="Sibling Rate:" HorizontalAlignment="Right" Margin="0,139,91,0" VerticalAlignment="Top" Width="86" FontSize="14"/>
-            <TextBox x:Name="txt_MaxHours" VerticalContentAlignment="Center" Height="25" Margin="28,255,271,0" VerticalAlignment="Top" TextChanged="txt_MaxHours_TextChanged" GotFocus="txt_GotFocus" TabIndex="48" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="The maximum number of hours a child can be checked in before late fees are charged."/>
-            <Label Content="OTime" HorizontalAlignment="Left" Margin="242,226,0,0" VerticalAlignment="Top" FontSize="14" Width="120"/>
-            <TextBox HorizontalAlignment="Left" Height="25" Margin="242,255,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" TextChanged="TextBox_TextChanged"/>
-            <Label Content="2 Rate" HorizontalAlignment="Left" Margin="28,285,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
-            <TextBox HorizontalAlignment="Left" Height="25" Margin="28,314,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" />
-            <Label Content="ORate" HorizontalAlignment="Left" Margin="242,288,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
-            <TextBox Name="tbx_OvertimeRate" HorizontalAlignment="Left" Height="25" Margin="242,314,0,0" VerticalAlignment="Top" Width="125" Background="#FFE6EAE0" />
+            <TextBox x:Name="txt_MaxHours" VerticalContentAlignment="Center" Height="25" Margin="28,285,271,0" VerticalAlignment="Top" TextChanged="txt_MaxHours_TextChanged" GotFocus="txt_GotFocus" TabIndex="48" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="The maximum number of hours a child can be checked in before late fees are charged."/>
+            <Label Content="OTime" HorizontalAlignment="Left" Margin="242,256,0,0" VerticalAlignment="Top" FontSize="14" Width="120"/>
+            <TextBox HorizontalAlignment="Left" Height="25" Margin="242,285,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" TextChanged="TextBox_TextChanged"/>
+            <Label Content="2 Rate" HorizontalAlignment="Left" Margin="28,310,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
+            <TextBox HorizontalAlignment="Left" Height="25" Margin="28,339,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" />
+            <Label Content="ORate" HorizontalAlignment="Left" Margin="242,310,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
+            <TextBox Name="tbx_OvertimeRate" HorizontalAlignment="Left" Height="25" Margin="242,339,0,0" VerticalAlignment="Top" Width="125" Background="#FFE6EAE0" />
         </Grid>
     </Border>
 </Window>
