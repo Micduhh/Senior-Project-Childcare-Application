@@ -9,9 +9,13 @@ using System.Windows.Input;
 namespace AdminTools {
     public partial class AdminLogin : Window {
         private LoginDB db;
+        private EventDB dbTool;
         private bool parentTools = false;
 
         public AdminLogin() {
+            //The following two lines are for editing rows in the event database
+            //dbTool = new EventDB();
+            //dbTool.DBInitialize();
             InitializeComponent();
             this.db = new LoginDB();
             this.txt_UserName.Focus();

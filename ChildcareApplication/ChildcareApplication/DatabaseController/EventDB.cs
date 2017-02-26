@@ -11,6 +11,31 @@ namespace DatabaseController {
         public EventDB() {
             this.dbCon = new SQLiteConnection("Data Source=../../../Database/ChildcareDB.s3db;Version=3;");
         }
+
+        public void DBInitialize()
+        {
+            try
+            {
+                dbCon.Open();
+                string query1 = "ALTER TABLE EventData ADD COLUMN EventMaximumHoursRate FLOAT(20)";
+                string query2 = "ALTER TABLE EventData ADD COLUMN AdditionalRateTime INT(20)";
+                string query3 = "ALTER TABLE EventData ADD COLUMN AdditionalRateAmount INTEGER(20)";
+                ExecuteQuery(query1);
+                ExecuteQuery(query2);
+                ExecuteQuery(query3);
+            }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        private void ExecuteQuery(string query)
+        {
+            var cmd = new SQLiteCommand(query, dbCon);
+            cmd.ExecuteNonQuery();
+        }
+
         public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount) {
             String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
             query += "', '" + hourlyDiscount + "', null, null, null, null, null, null, null);";
