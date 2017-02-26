@@ -590,11 +590,18 @@ namespace DatabaseController {
         }
 
         public void DeleteEvent(string eventName) {
+            /*
             string sql = "Update EventData Set EventDeletionDate = @date " +
                          "where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
             command.Parameters.Add(new SQLiteParameter("@date", DateTime.Now.ToString("yyyy-MM-dd")));
+            */
+            //Beginning of newly added DeleteEvent
+            string sql = "Delete from EventData where EventName = @eventName";
+            SQLiteCommand command = new SQLiteCommand(sql, dbCon);
+            command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
+            //End of newly added DeleteEvent
             try {
                 dbCon.Open();
                 command.ExecuteNonQuery();

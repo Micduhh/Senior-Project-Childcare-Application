@@ -219,17 +219,28 @@ namespace AdminTools {
                 cmb_Occurence.Focus();
                 return false;
             }
-            if (txt_MaxHours.Text != "" && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
+            if (txt_MaxHours.Text.Equals("") && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
                 WPFMessageBox.Show("You must enter a valid number greater than zero in the maximum hours text box.");
                 txt_MaxHours.Focus();
                 return false;
             }
             if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
             {
-                WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the OTime Price box");
+                WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the Overtime Price box.");
                 tbx_OvertimeRate.Focus();
+                return false;//This may cause problems?
             }
-
+            if (Addtl_Rate_Time.Text.Equals("") && !ValidDoubleGreaterThanZero(Addtl_Rate_Time.Text)) {
+                WPFMessageBox.Show("Enter a valid number greater than zero in the Additional Rate Time field.");
+                Addtl_Rate_Time.Focus();
+                return false;
+            }
+            if (!ValidDoubleGreaterThanZero(Addtl_Rate_Amt.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the  Price box.");
+                Addtl_Rate_Amt.Focus();
+                return false;//This may cause problems?
+            }
             return true;
         }
 
