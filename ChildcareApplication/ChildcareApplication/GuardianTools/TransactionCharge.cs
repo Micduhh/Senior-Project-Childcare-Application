@@ -91,6 +91,7 @@ namespace GuardianTools {
             }
         }
 
+        //Below method should be helpful in adding additional late fees retrieved from the EventDB
         internal double CalculateLateFee(string date) {
             TransactionDB transDB = new TransactionDB();
             EventDB eventDB = new EventDB();
