@@ -17,11 +17,11 @@ namespace DatabaseController {
             try
             {
                 dbCon.Open();
-                string query1 = "ALTER TABLE EventData ADD COLUMN EventMaximumHoursRate FLOAT(20)";
-                string query2 = "ALTER TABLE EventData ADD COLUMN AdditionalRateTime INT(20)";
-                string query3 = "ALTER TABLE EventData ADD COLUMN AdditionalRateAmount INTEGER(20)";
-                ExecuteQuery(query1);
-                ExecuteQuery(query2);
+                //string query1 = "ALTER TABLE EventData ADD COLUMN EventMaximumHoursRate FLOAT(20)";
+                //string query2 = "ALTER TABLE EventData ADD COLUMN AdditionalRateTime INT(20)";
+                string query3 = "ALTER TABLE EventData DROP COLUMN AdditionalRateAmount INTEGER(20)";
+                //ExecuteQuery(query1);
+                //ExecuteQuery(query2);
                 ExecuteQuery(query3);
             }
             catch(SQLiteException e)
@@ -30,16 +30,63 @@ namespace DatabaseController {
             }
         }
 
+        public void DBCreate()
+        {
+            try
+            {
+                dbCon.Open();
+                string sql = "CREATE TABLE if not exists`EventDataT` ("
+    + "`EventName`	varchar(50) NOT NULL,"
+    + "`HourlyPrice`	float,"
+    + "`HourlyDiscount`	float,"
+    + "`DailyPrice`	float,"
+    + "`DailyDiscount`	float,"
+    + "`EventMonth`	int,"
+    + "`EventDay`	int,"
+    + "`EventWeekday`	varchar(10),"
+    + "`EventMaximumHours`	int,"
+    + "`EventDeletionDate`	date,"
+    + "`EventMaximumHoursRate`	float(20),"
+    + "`AdditionalRateTime`	int(20),"
+    + "`AdditionalRateAmount`	float(20),"
+    + "PRIMARY KEY(EventName));";
+                ExecuteQuery(sql);
+                dbCon.Close();
+   }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        public void DBCopy()
+        {
+            try
+            {
+                dbCon.Open();
+                string sql = "INSERT INTO EventDataT SELECT * FROM EventData;";
+                ExecuteQuery(sql);
+            }
+            catch(SQLiteException e)
+            {
+
+            }
+
+
+        }
+
         private void ExecuteQuery(string query)
         {
             var cmd = new SQLiteCommand(query, dbCon);
             cmd.ExecuteNonQuery();
         }
 
-        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount) {
+        //This is this one we messed with (and works)!!!
+        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
             String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', '" + hourlyDiscount + "', null, null, null, null, null, null, null);";
-            try {
+            //query += "', '" + hourlyDiscount + "', null, null, null, null, null, null, null);";
+            query += "', '" + hourlyDiscount + "', null, null, null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
+                try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
                 cmd.ExecuteNonQuery();
