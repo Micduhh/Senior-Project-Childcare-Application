@@ -638,7 +638,7 @@ namespace DatabaseController {
             }
         }
 
-        //This may be helpful in determining how to extract the overtime and 
+        //This may be helpful in determining how to extract the overtime fee and add it to the late fee
         public double GetLateFee(string eventName) {
             string sql = "select HourlyPrice " +
                          "from EventDataT " +
