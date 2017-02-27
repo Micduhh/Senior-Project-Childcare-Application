@@ -19,10 +19,10 @@ namespace DatabaseController {
                 dbCon.Open();
                 //string query1 = "ALTER TABLE EventDataT ADD COLUMN EventMaximumHoursRate FLOAT(20)";
                 //string query2 = "ALTER TABLE EventDataT ADD COLUMN AdditionalRateTime INT(20)";
-                string query3 = "ALTER TABLE EventDataT DROP COLUMN AdditionalRateAmount INTEGER(20)";
+                //string query3 = "ALTER TABLE EventDataT DROP COLUMN AdditionalRateAmount INTEGER(20)";
                 //ExecuteQuery(query1);
                 //ExecuteQuery(query2);
-                ExecuteQuery(query3);
+                //ExecuteQuery(query3);
             }
             catch(SQLiteException e)
             {
@@ -35,7 +35,7 @@ namespace DatabaseController {
             try
             {
                 dbCon.Open();
-                string sql = "CREATE TABLE if not exists`EventDataTT` ("
+                string sql = "CREATE TABLE if not exists`EventDataT` ("
     + "`EventName`	varchar(50) NOT NULL,"
     + "`HourlyPrice`	float,"
     + "`HourlyDiscount`	float,"
@@ -64,7 +64,7 @@ namespace DatabaseController {
             try
             {
                 dbCon.Open();
-                string sql = "INSERT INTO EventDataTT SELECT * FROM EventDataT;";
+                string sql = "INSERT INTO EventDataT SELECT * FROM EventDataT;";
                 ExecuteQuery(sql);
             }
             catch(SQLiteException e)
