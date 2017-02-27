@@ -56,36 +56,36 @@ namespace AdminTools {
 
         private void LoadData(String eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
+            string[] EventDataT = eventDB.GetEvent(eventName);
 
-            txt_EventName.Text = eventData[0];
+            txt_EventName.Text = EventDataT[0];
 
-            SetPriceCombo(eventData);
-            SetAvailability(eventData);
-            SetMaxHours(eventData);
+            SetPriceCombo(EventDataT);
+            SetAvailability(EventDataT);
+            SetMaxHours(EventDataT);
         }
 
-        private void SetPriceCombo(string[] eventData) {
-            if (eventData[1] != "") { //hourly price
+        private void SetPriceCombo(string[] EventDataT) {
+            if (EventDataT[1] != "") { //hourly price
                 cmb_PriceType.SelectedIndex = 0;
-                txt_Rate.Text = eventData[1];
-                if (eventData[2] != "") {
-                    txt_DiscountPrice.Text = eventData[2];
+                txt_Rate.Text = EventDataT[1];
+                if (EventDataT[2] != "") {
+                    txt_DiscountPrice.Text = EventDataT[2];
                 }
-            } else if (eventData[3] != "") { //daily price
+            } else if (EventDataT[3] != "") { //daily price
                 cmb_PriceType.SelectedIndex = 1;
-                txt_Rate.Text = eventData[3];
-                if (eventData[4] != "") {
-                    txt_DiscountPrice.Text = eventData[4];
+                txt_Rate.Text = EventDataT[3];
+                if (EventDataT[4] != "") {
+                    txt_DiscountPrice.Text = EventDataT[4];
                 }
             }
         }
 
-        private void SetAvailability(string[] eventData) {
-            if (eventData[5] != "" && eventData[6] != "") { //specific day
+        private void SetAvailability(string[] EventDataT) {
+            if (EventDataT[5] != "" && EventDataT[6] != "") { //specific day
                 cmb_Occurence.SelectedIndex = 1;
-                txt_MonthNum.Text = eventData[5];
-                txt_DayOfMonth.Text = eventData[6];
+                txt_MonthNum.Text = EventDataT[5];
+                txt_DayOfMonth.Text = EventDataT[6];
                 lbl_DayNum.Visibility = Visibility.Visible;
                 lbl_MonthNum.Visibility = Visibility.Visible;
                 txt_DayOfMonth.Visibility = Visibility.Visible;
@@ -93,8 +93,8 @@ namespace AdminTools {
 
                 lbl_DayName.Visibility = Visibility.Hidden;
                 cmb_DayName.Visibility = Visibility.Hidden;
-            } else if (eventData[7] != "") { //weekday
-                String dayName = eventData[7];
+            } else if (EventDataT[7] != "") { //weekday
+                String dayName = EventDataT[7];
                 cmb_Occurence.SelectedIndex = 2;
                 //show day name
                 lbl_DayName.Visibility = Visibility.Visible;

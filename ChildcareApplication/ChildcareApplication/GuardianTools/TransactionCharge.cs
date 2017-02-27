@@ -106,11 +106,11 @@ namespace GuardianTools {
 
         internal bool CheckIfHourly(string eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
-            if (eventData == null) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if (EventDataT == null) {
                 return false;
             }
-            if (String.IsNullOrWhiteSpace(eventData[1])) {
+            if (String.IsNullOrWhiteSpace(EventDataT[1])) {
                 return false;
             }
             return true;
@@ -120,38 +120,38 @@ namespace GuardianTools {
             EventDB eventDB = new EventDB();
             bool discount = false;
             int childrenCheckedIn = db.NumberOfCheckedIn(guardianID);
-            string[] eventData = eventDB.GetEvent(eventName);
-            if ((childrenCheckedIn > 1) && (!String.IsNullOrWhiteSpace(eventData[2]) || !String.IsNullOrWhiteSpace(eventData[4]))) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if ((childrenCheckedIn > 1) && (!String.IsNullOrWhiteSpace(EventDataT[2]) || !String.IsNullOrWhiteSpace(EventDataT[4]))) {
                 discount = true;
             }
-            if (eventData == null) {
+            if (EventDataT == null) {
                 return 0.0;
             }
             if (discount) {
-                if (String.IsNullOrWhiteSpace(eventData[2])) {
-                    return Convert.ToDouble(eventData[4]);
+                if (String.IsNullOrWhiteSpace(EventDataT[2])) {
+                    return Convert.ToDouble(EventDataT[4]);
                 } else {
-                    return Convert.ToDouble(eventData[2]);
+                    return Convert.ToDouble(EventDataT[2]);
                 }
             } else {
-                if (String.IsNullOrWhiteSpace(eventData[1])) {
-                    return Convert.ToDouble(eventData[3]);
+                if (String.IsNullOrWhiteSpace(EventDataT[1])) {
+                    return Convert.ToDouble(EventDataT[3]);
                 } else {
-                    return Convert.ToDouble(eventData[1]);
+                    return Convert.ToDouble(EventDataT[1]);
                 }
             }
         }
 
         internal double GetStrictEventFee(string eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
-            if (eventData == null) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if (EventDataT == null) {
                 return 0.0;
             }
-            if (String.IsNullOrWhiteSpace(eventData[1])) {
-                return Convert.ToDouble(eventData[3]);
+            if (String.IsNullOrWhiteSpace(EventDataT[1])) {
+                return Convert.ToDouble(EventDataT[3]);
             } else {
-                return Convert.ToDouble(eventData[1]);
+                return Convert.ToDouble(EventDataT[1]);
             }
         }
 
