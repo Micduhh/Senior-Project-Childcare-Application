@@ -81,6 +81,49 @@ namespace DatabaseController {
             cmd.ExecuteNonQuery();
         }
 
+        public string[] FindEventData(string eventName)
+        {
+            string sql = "select * " +
+                         "from EventDataT " +
+                         "where EventName = @EventName";
+            SQLiteCommand command = new SQLiteCommand(sql, dbCon);
+            command.Parameters.Add(new SQLiteParameter("@EventName", eventName));
+            SQLiteDataAdapter DB = new SQLiteDataAdapter(command);
+            DataSet DS = new DataSet();
+            try
+            {
+                dbCon.Open();
+                DB.Fill(DS);
+                int cCount = DS.Tables[0].Columns.Count;
+                string[] eventDataT = new string[cCount];
+                for (int x = 0; x < cCount; x++)
+                {
+                    try
+                    {
+                        eventDataT[x] = DS.Tables[0].Rows[0][x].ToString();
+                    }
+                    catch (Exception)
+                    {
+                        eventDataT[x] = "0";
+                    }
+                }
+                dbCon.Close();
+                return eventDataT;
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+                WPFMessageBox.Show("Database connection error. Please insure the database exists, and is accessible.");
+                dbCon.Close();
+                return null;
+            }
+            catch (Exception)
+            {
+                dbCon.Close();
+                WPFMessageBox.Show("Unable to retrieve original EventDB.");
+                return null;
+            }
+        }
+
         //This is this one we messed with (and works)!!!
         public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
             String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;

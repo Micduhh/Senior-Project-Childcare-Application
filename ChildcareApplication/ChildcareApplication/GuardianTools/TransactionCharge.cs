@@ -29,7 +29,10 @@ namespace GuardianTools {
         }
 
         internal bool PrepareTransaction(string childID, string guardianID) {
+
             TransactionDB transDB = new TransactionDB();
+            EventDB eventDB = new EventDB();
+
             string[] transaction = transDB.FindTransaction(this.allowanceID);
             if (transaction == null || this.allowanceID == null) {
                 WPFMessageBox.Show("Unable to check out child. Please log out then try again.");
@@ -38,6 +41,14 @@ namespace GuardianTools {
             this.eventName = transaction[1];
             string transactionDate = transaction[3];
             string checkInTime = transaction[4];
+            //
+            string[] eventData = eventDB.FindEventData(this.eventName);
+            string overHrs = eventData[8];
+            string overRate = eventData[10];
+            string addTime = eventData[11];
+            string addRate = eventData[12];
+            //
+            WPFMessageBox.Show("overHrs: " + overHrs + "\noverRate: " + overRate + "\naddTime: " + addTime + "\naddRate: " + addRate);
             checkInTime = Convert.ToDateTime(checkInTime).ToString("HH:mm:ss");
             string checkOutTime = DateTime.Now.ToString("HH:mm:ss");
             double eventFee = FindEventFee(guardianID, eventName);

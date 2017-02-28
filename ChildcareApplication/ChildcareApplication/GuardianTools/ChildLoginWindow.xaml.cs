@@ -89,14 +89,28 @@ namespace GuardianTools {
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
             } catch (System.IO.DirectoryNotFoundException) {
+                
                 BitmapImage bitmapImage = new BitmapImage();
-                var fileInfo = new FileInfo(@"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures/default.jpg"); //TAG: pictures access
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri(fileInfo.FullName);
-                bitmapImage.DecodePixelWidth = size;
-                bitmapImage.DecodePixelHeight = size;
-                bitmapImage.EndInit();
-                image.Source = bitmapImage;
+                ImageBrush ib = new ImageBrush();
+                try
+                {
+                    var fileInfo = new FileInfo(@"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures/default.jpg"); //TAG: pictures access
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(fileInfo.FullName);
+                    bitmapImage.DecodePixelWidth = size;
+                    bitmapImage.DecodePixelHeight = size;
+                    bitmapImage.EndInit();//
+                    image.Source = bitmapImage;
+                }
+                catch(Exception e)
+                {
+                    //New method:                            
+                    string currDir = Directory.GetCurrentDirectory();
+                    string resultDir = getGreatGrandParent();
+                    string imageDir = resultDir + "\\Pictures\\default.jpg";
+                    image.Source = new BitmapImage(new Uri(@"" + imageDir, UriKind.Relative));
+                }
+                
             } catch (Exception) {
                 WPFMessageBox.Show("Unable to load photo for unknown reason.");
             }
@@ -184,6 +198,16 @@ namespace GuardianTools {
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private string getGreatGrandParent()
+        {
+            string currDir = Directory.GetCurrentDirectory();
+            DirectoryInfo tempDir1 = null;
+            DirectoryInfo tempDir2 = Directory.GetParent(currDir);
+            tempDir1 = Directory.GetParent(tempDir2.ToString());
+            tempDir2 = Directory.GetParent(tempDir1.ToString());
+            return tempDir2.ToString();
         }
     }
 }
