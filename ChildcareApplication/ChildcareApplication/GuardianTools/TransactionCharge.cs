@@ -41,14 +41,7 @@ namespace GuardianTools {
             this.eventName = transaction[1];
             string transactionDate = transaction[3];
             string checkInTime = transaction[4];
-            //
-            string[] eventData = eventDB.FindEventData(this.eventName);
-            string overHrs = eventData[8];
-            string overRate = eventData[10];
-            string addTime = eventData[11];
-            string addRate = eventData[12];
-            //
-            WPFMessageBox.Show("overHrs: " + overHrs + "\noverRate: " + overRate + "\naddTime: " + addTime + "\naddRate: " + addRate);
+
             checkInTime = Convert.ToDateTime(checkInTime).ToString("HH:mm:ss");
             string checkOutTime = DateTime.Now.ToString("HH:mm:ss");
             double eventFee = FindEventFee(guardianID, eventName);
@@ -62,6 +55,18 @@ namespace GuardianTools {
 
         internal double CalculateTransaction(string checkInTime, string checkOutTime, string eventName, double eventFee) {
             EventDB eventDB = new EventDB();
+            //
+            string[] eventData = eventDB.FindEventData(this.eventName);
+            int overHrs;
+            int.TryParse(eventData[8], out overHrs);
+            double overRate;
+            Double.TryParse(eventData[10], out overRate);
+            int addTime;
+            int.TryParse(eventData[11], out addTime);
+            double addRate;
+            Double.TryParse(eventData[12], out addRate);
+            WPFMessageBox.Show("overHrs: " + overHrs.ToString() + "\noverRate: " + overRate.ToString() + "\naddTime: " + addTime.ToString() + "\naddRate: " + addRate.ToString());
+            //
             TimeSpan TimeSpanCheckOut = TimeSpan.Parse(DateTime.Parse(checkOutTime).ToString("HH:mm:ss"));
             TimeSpan TimeSpanCheckIn = TimeSpan.Parse(DateTime.Parse(checkInTime).ToString("HH:mm:ss"));
             double totalCheckedInHours = (TimeSpanCheckOut.Hours - TimeSpanCheckIn.Hours) + ((TimeSpanCheckOut.Minutes - TimeSpanCheckIn.Minutes) / 60.0);
