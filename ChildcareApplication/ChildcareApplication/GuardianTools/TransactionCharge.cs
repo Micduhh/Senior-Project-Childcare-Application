@@ -70,9 +70,38 @@ namespace GuardianTools {
             TimeSpan TimeSpanCheckOut = TimeSpan.Parse(DateTime.Parse(checkOutTime).ToString("HH:mm:ss"));
             TimeSpan TimeSpanCheckIn = TimeSpan.Parse(DateTime.Parse(checkInTime).ToString("HH:mm:ss"));
             double totalCheckedInHours = (TimeSpanCheckOut.Hours - TimeSpanCheckIn.Hours) + ((TimeSpanCheckOut.Minutes - TimeSpanCheckIn.Minutes) / 60.0);
-            double lateMaximum = eventDB.GetEventHourCap(eventName);
-            if (totalCheckedInHours > lateMaximum && eventName.CompareTo("Late Fee") != 0) {
-                double timeDifference = totalCheckedInHours - lateMaximum;
+            //double lateMaximum = eventDB.GetEventHourCap(eventName);
+            totalCheckedInHours = 6;//
+            int hrs = 0;
+            if(totalCheckedInHours > overHrs)
+            {
+                hrs = overHrs;
+                double overTime = totalCheckedInHours - overHrs;
+                hrs += (int)Math.Ceiling(overTime * 6); 
+            }
+            if(totalCheckedInHours < overHrs)
+            {
+                hrs = (int)Math.Floor(totalCheckedInHours);
+                double minutes = totalCheckedInHours - Math.Floor(totalCheckedInHours);
+                if (minutes > (1 / 6)) // greater than 10 minutes
+                    hrs++;
+            }
+
+
+            /*
+            if (totalCheckedInHours < addTime)
+            {
+                addRate = 0;
+            }
+            if (totalCheckedInHours < overHrs)
+            {
+                overRate = 0;
+            }
+            */
+            
+            /*
+             * if (totalCheckedInHours > lateMaximum && eventName.CompareTo("Late Fee") != 0) {
+                double timeDifference = totalCheckedInHours - lateMaximum;                
                 if (timeDifference > this.lateTime) {
                     this.lateTime = timeDifference;
                     totalCheckedInHours = lateMaximum;
@@ -84,19 +113,52 @@ namespace GuardianTools {
                 totalCheckedInHours = totalCheckedInHours - this.lateTime;
                 this.isLate = true;
             }
-            return getCharge(eventFee, eventName, totalCheckedInHours);
+            */
+
+            return getCharge(eventFee, eventName, totalCheckedInHours, overHrs, overRate, addTime, addRate, hrs);
         }
 
-        internal double getCharge(double eventFee, string eventName, double totalCheckedInHours) {
-            if (CheckIfHourly(eventName)) {
-                eventFee = eventFee * totalCheckedInHours;
-                eventFee = Math.Round(eventFee, 2, MidpointRounding.AwayFromZero);
+        internal double getCharge(double eventFee, string eventName, double totalCheckedInHours, int overHrs, double overRate, int addTime, double addRate, int hrs) {
+            int i = 0;
+            double charge = 0;
+            if (CheckIfHourly(eventName))
+            {
+                while (i < hrs && i < addTime)
+                {
+                    charge += eventFee;
+                    i++;
+                }
+                while (i < hrs && i < overHrs)
+                {
+                    charge += addRate;
+                    i++;
+                } while (i < hrs)
+                {
+                    charge += overRate;
+                    i++;
+                }
             }
-            eventFee = eventFee - GetBillingCap(eventName, guardianID, eventFee);
-            if (totalCheckedInHours < 0) {
-                eventFee = 0;
+            else
+            {
+                charge = eventFee;
+            }            
+            charge = Math.Round(charge, 2, MidpointRounding.AwayFromZero);
+            charge = charge - GetBillingCap(eventName, guardianID, charge);
+            if (totalCheckedInHours < 0)
+            {
+                charge = 0;
             }
-            return eventFee;
+                /*
+                if (CheckIfHourly(eventName)) {
+                    eventFee = eventFee * totalCheckedInHours;
+                    eventFee = Math.Round(eventFee, 2, MidpointRounding.AwayFromZero);
+                }
+                eventFee = eventFee - GetBillingCap(eventName, guardianID, eventFee);
+                if (totalCheckedInHours < 0) {
+                    eventFee = 0;
+                }
+                */
+                return charge;
         }
 
         public void CompleteTransaction(double eventFee, string name, string date) {

@@ -265,7 +265,7 @@ namespace AdminTools {
                             //ib.ImageSource = new BitmapImage(new Uri(icon_path, UriKind.Relative));
 
                         }
-                        catch (DirectoryNotFoundException e)
+                        catch (DirectoryNotFoundException)
                         {
                             ib.ImageSource = new BitmapImage(new Uri((@"" + ChildcareApplication.Properties.Resources.defaultimage)));
                         }

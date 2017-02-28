@@ -102,7 +102,7 @@ namespace GuardianTools {
                     bitmapImage.EndInit();//
                     image.Source = bitmapImage;
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     //New method:                            
                     string currDir = Directory.GetCurrentDirectory();

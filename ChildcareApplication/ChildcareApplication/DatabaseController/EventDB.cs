@@ -67,7 +67,7 @@ namespace DatabaseController {
                 string sql = "INSERT INTO EventDataT SELECT * FROM EventDataT;";
                 ExecuteQuery(sql);
             }
-            catch(SQLiteException e)
+            catch(SQLiteException)
             {
 
             }
