@@ -95,3 +95,17 @@ C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareUnitTests\bin
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.csprojResolveAssemblyReference.cache
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.dll
 C:\Users\juan\Desktop\Senior-Project\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.pdb
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\ChildcareUnitTests.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\ChildcareUnitTests.pdb
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\ChildcareApplication.exe
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\System.Data.SQLite.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\PdfSharp-WPF.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\WPFMessageBox.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\ChildcareApplication.pdb
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\ChildcareApplication.exe.config
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\bin\Debug\WPFMessageBox.pdb
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.csprojResolveAssemblyReference.cache
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.dll
+C:\Users\juan\Desktop\Senior-Project-Childcare-Application\ChildcareApplication\ChildcareUnitTests\obj\Debug\ChildcareUnitTests.pdb

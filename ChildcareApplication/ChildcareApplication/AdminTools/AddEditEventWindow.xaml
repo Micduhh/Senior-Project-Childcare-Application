@@ -5,6 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
+        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen" Background="LightBlue" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True" HorizontalAlignment="Right" Width="420">
         <Grid Margin="-1,-2,-2,0" HorizontalAlignment="Right" Width="419">
@@ -56,11 +57,11 @@
             <Label x:Name="lbl_Discount" Content="Sibling Rate:" HorizontalAlignment="Right" Margin="0,139,91,0" VerticalAlignment="Top" Width="86" FontSize="14"/>
             <TextBox x:Name="txt_MaxHours" VerticalContentAlignment="Center" Height="25" Margin="242,285,57,0" VerticalAlignment="Top" TextChanged="txt_MaxHours_TextChanged" GotFocus="txt_GotFocus" TabIndex="48" KeyUp="KeyUp_Event" Background="#FFE6EAE0" FontSize="14" ToolTip="The maximum number of hours a child can be checked in before late fees are charged."/>
             <Label Content="Overtime Time" HorizontalAlignment="Left" Margin="242,256,0,0" VerticalAlignment="Top" FontSize="14" Width="120"/>
-            <TextBox Name="Addtl_Rate_Time" HorizontalAlignment="Left" Height="25" Margin="28,285,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" TextChanged="TextBox_TextChanged"/>
+            <TextBox Name="Addtl_Rate_Time" HorizontalAlignment="Left" Height="25" Margin="28,285,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" TextChanged="Addtl_Rate_Time_TextChanged"/>
             <Label Content="Additional Rate" HorizontalAlignment="Left" Margin="28,310,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
-            <TextBox Name="Addtl_Rate_Amt" HorizontalAlignment="Left" Height="25" Margin="28,339,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" />
+            <TextBox Name="Addtl_Rate_Amt" HorizontalAlignment="Left" Height="25" Margin="28,339,0,0" VerticalAlignment="Top" Width="120" Background="#FFE6EAE0" TextChanged="Addtl_Rate_Amt_TextChanged" />
             <Label Content="Overtime Rate" HorizontalAlignment="Left" Margin="242,310,0,0" VerticalAlignment="Top" Width="120" FontSize="14"/>
-            <TextBox Name="tbx_OvertimeRate" HorizontalAlignment="Left" Height="25" Margin="242,339,0,0" VerticalAlignment="Top" Width="125" Background="#FFE6EAE0" />
+            <TextBox Name="tbx_OvertimeRate" HorizontalAlignment="Left" Height="25" Margin="242,339,0,0" VerticalAlignment="Top" Width="125" Background="#FFE6EAE0" TextChanged="tbx_OvertimeRate_TextChanged" />
         </Grid>
     </Border>
 </Window>

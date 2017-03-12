@@ -216,6 +216,8 @@ namespace DatabaseController {
             }
         }
 
+        
+
         public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
             String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
             query += "',  null, null, null, null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
@@ -230,6 +232,8 @@ namespace DatabaseController {
                 dbCon.Close();
             }
         }
+
+        
 
         public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
             String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
@@ -612,6 +616,70 @@ namespace DatabaseController {
             } catch (Exception exception) {
                 WPFMessageBox.Show(exception.Message);
                 dbCon.Close();
+            }
+        }
+
+        internal void UpdateMaxHourPrice(string maxHour, float maxHourPrice)
+        {
+            string query = $"UPDATE EventDataT SET EventMaximumHoursRate = @maxHourPrice WHERE EventName = @maxHour";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("maxHourPrice", maxHourPrice);
+                command.Parameters.AddWithValue("maxHour", maxHour);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        internal void UpdateAdditionalTime(string additionalTime, float additionalTimeUpdate)
+        {
+            string query = $"UPDATE EventDataT SET AdditionalRateTime = @additionalTimeUpdate WHERE EventName = @additionalTime";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("additionalTimeUpdate", additionalTimeUpdate);
+                command.Parameters.AddWithValue("additionalTime", additionalTime);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch (SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        // AdditionalRateAmount
+        internal void UpdateAdditionalRate(string eventName, float updatedAdditionalRate)
+        {
+            string query = $"UPDATE EventDataT SET AdditionalRateAmount = @updatedAdditionalRate WHERE EventName = @eventName";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("updatedAdditionalRate", updatedAdditionalRate);
+                command.Parameters.AddWithValue("eventName", eventName);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch (SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
             }
         }
 

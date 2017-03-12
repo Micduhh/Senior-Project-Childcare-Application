@@ -10,7 +10,11 @@ using System.Windows.Input;
 namespace AdminTools {
     public partial class AddEditEventWindow : Window {
         private bool valueChanged, maxHoursChanged;
+        private bool _maxHourPriceChanged;
+        private bool _addtlTimeChanged;
+        private bool _addtnlRateChanged;
         String oldEventName;
+        private bool _windowLoaded = false;
 
         public AddEditEventWindow() {
             InitializeComponent();
@@ -29,6 +33,7 @@ namespace AdminTools {
             }
             this.oldEventName = oldEventName;
             this.MouseDown += WindowMouseDown;
+
         }
 
         private void ProtectEvents(string oldEventName) {
@@ -47,9 +52,11 @@ namespace AdminTools {
         }
 
         private void btn_Submit_Click(object sender, RoutedEventArgs e) {
-            if (this.valueChanged) {
+            if (this.valueChanged)
+            {
                 ProcessModification();
-            } else {
+            } else
+            {
                 WPFMessageBox.Show("You have not changed any values!  If you would like to return to the previous window without making changes, please hit cancel.");
             }
         }
@@ -62,7 +69,15 @@ namespace AdminTools {
 
             SetPriceCombo(EventDataT);
             SetAvailability(EventDataT);
-            SetMaxHours(EventDataT);
+            FillFields(EventDataT);
+        }
+
+        private void FillFields(string[] eventData)
+        {
+            SetMaxHours(eventData);
+            SetMaxHourPrice(eventData);
+            SetAdditionalRateTime(eventData);
+            SetAdditionalRate(eventData);
         }
 
         private void SetPriceCombo(string[] EventDataT) {
@@ -110,9 +125,35 @@ namespace AdminTools {
             }
         }
 
-        private void SetMaxHours(string[] eventInfo) {
-            if (eventInfo[8] != null) {
+        private void SetMaxHours(string[] eventInfo)
+        {
+            if (eventInfo[8] != null)
+            {
                 txt_MaxHours.Text = eventInfo[8];
+            }
+        }
+
+        private void SetMaxHourPrice(string[] eventInfo)
+        {
+            if(eventInfo[10] != null)
+            {
+                tbx_OvertimeRate.Text = eventInfo[10];
+            }
+        }
+
+        private void SetAdditionalRateTime(string[] eventInfo)
+        {
+            if(eventInfo[11] != null)
+            {
+                Addtl_Rate_Time.Text = eventInfo[11];
+            }
+        }
+
+        private void SetAdditionalRate(string[] eventInfo)
+        {
+            if(eventInfo[12] != null)
+            {
+                Addtl_Rate_Amt.Text = eventInfo[12];
             }
         }
 
@@ -172,14 +213,66 @@ namespace AdminTools {
                 } else {
                     EditEventNoDiscount();
                 }
-                if (this.maxHoursChanged) {
-                    EventDB eventDB = new EventDB();
-                    if (txt_MaxHours.Text != "") {
+
+                EventDB eventDB = new EventDB();
+                string eventName = txt_EventName.Text;
+
+                if (this.maxHoursChanged)
+                {
+                    
+                    if (txt_MaxHours.Text != "")
+                    {
                         eventDB.UpdateMaxHours(txt_EventName.Text, "'" + txt_MaxHours.Text + "'");
                     } else {
                         eventDB.UpdateMaxHours(txt_EventName.Text, "null");
                     }
                 }
+
+                if(_maxHourPriceChanged)
+                {
+                    string maxHourRate = tbx_OvertimeRate.Text;
+                    float.TryParse(maxHourRate, out float updatedMaxHourRate);
+
+                    if (!string.IsNullOrEmpty(maxHourRate))
+                    {                        
+                        eventDB.UpdateMaxHourPrice(eventName, updatedMaxHourRate);
+                    }
+                    else
+                    {
+                        eventDB.UpdateMaxHourPrice(eventName, updatedMaxHourRate);
+                    }
+                }
+
+                if (_addtlTimeChanged)
+                {
+                    string additionalTime = Addtl_Rate_Time.Text;
+                    if (!string.IsNullOrEmpty(additionalTime))
+                    {
+                        float.TryParse(additionalTime, out float updatedAddtlTime);
+
+                        eventDB.UpdateAdditionalTime(eventName, updatedAddtlTime);
+                    }
+                    else
+                    {
+                        eventDB.UpdateAdditionalTime(eventName, 0);
+                    }
+                }
+
+                if (_addtnlRateChanged)
+                {
+                    string additionalRate = Addtl_Rate_Amt.Text;
+                    if (!string.IsNullOrEmpty(additionalRate))
+                    {
+                        float.TryParse(additionalRate, out float updatedRate);
+
+                        eventDB.UpdateAdditionalRate(eventName, updatedRate);
+                    }
+                    else
+                    {
+                        eventDB.UpdateAdditionalRate(eventName, 0);
+                    }
+                }
+
                 CloseWindow();
             }
         }
@@ -219,12 +312,27 @@ namespace AdminTools {
                 cmb_Occurence.Focus();
                 return false;
             }
-            if (txt_MaxHours.Text.Equals("") && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
+            if (!int.TryParse(txt_MaxHours.Text, out int updatedMaxHour) && txt_MaxHours.Text.Equals("") && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
                 WPFMessageBox.Show("You must enter a valid number greater than zero in the maximum hours text box.");
                 txt_MaxHours.Focus();
                 return false;
             }
-            if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
+
+            if(!int.TryParse(Addtl_Rate_Time.Text, out int newTime) || !ValidDoubleGreaterThanZero(Addtl_Rate_Time.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid number greater than 0");
+                Addtl_Rate_Time.Focus();
+                return false;
+            }
+
+            if(!float.TryParse(Addtl_Rate_Amt.Text, out float newAmount) || !ValidDoubleGreaterThanZero(Addtl_Rate_Amt.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid number greater than 0");
+                Addtl_Rate_Amt.Focus();
+                return false;
+            }
+
+            if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text) || !ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
             {
                 WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the Overtime Price box.");
                 tbx_OvertimeRate.Focus();
@@ -472,10 +580,47 @@ namespace AdminTools {
             return false;
         }
 
-        private void txt_MaxHours_TextChanged(object sender, TextChangedEventArgs e) {
-            this.valueChanged = true;
-            this.maxHoursChanged = true;
+        #region TextChanged Listeners
+
+        private void txt_MaxHours_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                this.maxHoursChanged = true;
+            }
         }
+
+        private void tbx_OvertimeRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _maxHourPriceChanged = true;
+            }
+        }
+
+        private void Addtl_Rate_Time_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _addtlTimeChanged = true;
+            }
+        }
+
+        private void Addtl_Rate_Amt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _addtnlRateChanged = true;
+            }
+        }
+
+        
+
+        #endregion
 
         private void KeyUp_Event(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
@@ -491,9 +636,9 @@ namespace AdminTools {
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.valueChanged = true;
+            _windowLoaded = true;
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
