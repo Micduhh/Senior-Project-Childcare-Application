@@ -16,5 +16,5 @@ C:\Users\micah\Documents\GitHub\Senior-Project-Childcare-Application\ChildcareAp
 27447123266
 AboutWindow.xaml;AdminTools\AdminAddEdit.xaml;AdminTools\AdminChangeGuardianPIN.xaml;AdminTools\SelectGuardian.xaml;AdminTools\AdminLogin.xaml;AdminTools\ApplicationSettings.xaml;AdminTools\EditTransactionWindow.xaml;AdminTools\BusinessReport.xaml;AdminTools\LinkExistingChild.xaml;AdminTools\ParentReport.xaml;AdminTools\AdminMenu.xaml;AdminTools\NewParentLogin.xaml;AdminTools\AdminEditParentInfo.xaml;AdminTools\AdminEditChildInfo.xaml;AdminTools\EventManager.xaml;AdminTools\AddEditEventWindow.xaml;AdminTools\Link_DeLinkChild.xaml;AdminTools\ParentIDEntry.xaml;AdminTools\PaymentEntry.xaml;AdminTools\RestoreRecords.xaml;AdminTools\TransactionModificationWindow.xaml;GlassButton.xaml;GuardianTools\AdminChildCheckIn.xaml;GuardianTools\ChildLoginWindow.xaml;GuardianTools\GuardianCheckIn.xaml;UserTypeSelection.xaml;
 
-False
+True
 
