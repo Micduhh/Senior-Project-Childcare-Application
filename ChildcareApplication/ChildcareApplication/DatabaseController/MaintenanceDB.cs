@@ -186,7 +186,7 @@ namespace ChildcareApplication.DatabaseController {
 
         public bool DeleteEvents(string expirationDate) {
             String sql = "delete " +
-                         "from EventData " +
+                         "from EventDataT " +
                          "where EventDeletionDate <= '" + expirationDate + "'";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             try {

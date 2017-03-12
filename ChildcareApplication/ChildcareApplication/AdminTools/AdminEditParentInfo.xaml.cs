@@ -253,9 +253,11 @@ namespace AdminTools {
 
                             string resultDir = getGreatGrandParent();
                             string imageDir = resultDir + "\\Pictures\\default.jpg";
+                            /*
                             WPFMessageBox.Show("The current directory is: " + currDir);
                             WPFMessageBox.Show("The directory we're pointing to is: " + resultDir);
                             WPFMessageBox.Show("The directory of the default image file is: " + imageDir);
+                            */
                             ib.ImageSource = new BitmapImage(new Uri(@"" + imageDir, UriKind.Relative));
                             //ib.ImageSource = new BitmapImage(new Uri(@"" + "C:/Users/Public/Documents" + "/ChildcareApplication/ChildcareApplication/Pictures/default.jpg", UriKind.Relative));
 
@@ -263,7 +265,7 @@ namespace AdminTools {
                             //ib.ImageSource = new BitmapImage(new Uri(icon_path, UriKind.Relative));
 
                         }
-                        catch (DirectoryNotFoundException e)
+                        catch (DirectoryNotFoundException)
                         {
                             ib.ImageSource = new BitmapImage(new Uri((@"" + ChildcareApplication.Properties.Resources.defaultimage)));
                         }

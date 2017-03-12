@@ -29,7 +29,10 @@ namespace GuardianTools {
         }
 
         internal bool PrepareTransaction(string childID, string guardianID) {
+
             TransactionDB transDB = new TransactionDB();
+            EventDB eventDB = new EventDB();
+
             string[] transaction = transDB.FindTransaction(this.allowanceID);
             if (transaction == null || this.allowanceID == null) {
                 WPFMessageBox.Show("Unable to check out child. Please log out then try again.");
@@ -38,6 +41,7 @@ namespace GuardianTools {
             this.eventName = transaction[1];
             string transactionDate = transaction[3];
             string checkInTime = transaction[4];
+
             checkInTime = Convert.ToDateTime(checkInTime).ToString("HH:mm:ss");
             string checkOutTime = DateTime.Now.ToString("HH:mm:ss");
             double eventFee = FindEventFee(guardianID, eventName);
@@ -51,12 +55,53 @@ namespace GuardianTools {
 
         internal double CalculateTransaction(string checkInTime, string checkOutTime, string eventName, double eventFee) {
             EventDB eventDB = new EventDB();
+            //
+            string[] eventData = eventDB.FindEventData(this.eventName);
+            int overHrs;
+            int.TryParse(eventData[8], out overHrs);
+            double overRate;
+            Double.TryParse(eventData[10], out overRate);
+            int addTime;
+            int.TryParse(eventData[11], out addTime);
+            double addRate;
+            Double.TryParse(eventData[12], out addRate);
+            WPFMessageBox.Show("overHrs: " + overHrs.ToString() + "\noverRate: " + overRate.ToString() + "\naddTime: " + addTime.ToString() + "\naddRate: " + addRate.ToString());
+            //
             TimeSpan TimeSpanCheckOut = TimeSpan.Parse(DateTime.Parse(checkOutTime).ToString("HH:mm:ss"));
             TimeSpan TimeSpanCheckIn = TimeSpan.Parse(DateTime.Parse(checkInTime).ToString("HH:mm:ss"));
             double totalCheckedInHours = (TimeSpanCheckOut.Hours - TimeSpanCheckIn.Hours) + ((TimeSpanCheckOut.Minutes - TimeSpanCheckIn.Minutes) / 60.0);
-            double lateMaximum = eventDB.GetEventHourCap(eventName);
-            if (totalCheckedInHours > lateMaximum && eventName.CompareTo("Late Fee") != 0) {
-                double timeDifference = totalCheckedInHours - lateMaximum;
+            //double lateMaximum = eventDB.GetEventHourCap(eventName);
+            totalCheckedInHours = 6;//
+            int hrs = 0;
+            if(totalCheckedInHours > overHrs)
+            {
+                hrs = overHrs;
+                double overTime = totalCheckedInHours - overHrs;
+                hrs += (int)Math.Ceiling(overTime * 6); 
+            }
+            if(totalCheckedInHours < overHrs)
+            {
+                hrs = (int)Math.Floor(totalCheckedInHours);
+                double minutes = totalCheckedInHours - Math.Floor(totalCheckedInHours);
+                if (minutes > (1 / 6)) // greater than 10 minutes
+                    hrs++;
+            }
+
+
+            /*
+            if (totalCheckedInHours < addTime)
+            {
+                addRate = 0;
+            }
+            if (totalCheckedInHours < overHrs)
+            {
+                overRate = 0;
+            }
+            */
+            
+            /*
+             * if (totalCheckedInHours > lateMaximum && eventName.CompareTo("Late Fee") != 0) {
+                double timeDifference = totalCheckedInHours - lateMaximum;                
                 if (timeDifference > this.lateTime) {
                     this.lateTime = timeDifference;
                     totalCheckedInHours = lateMaximum;
@@ -68,19 +113,52 @@ namespace GuardianTools {
                 totalCheckedInHours = totalCheckedInHours - this.lateTime;
                 this.isLate = true;
             }
-            return getCharge(eventFee, eventName, totalCheckedInHours);
+            */
+
+            return getCharge(eventFee, eventName, totalCheckedInHours, overHrs, overRate, addTime, addRate, hrs);
         }
 
-        internal double getCharge(double eventFee, string eventName, double totalCheckedInHours) {
-            if (CheckIfHourly(eventName)) {
-                eventFee = eventFee * totalCheckedInHours;
-                eventFee = Math.Round(eventFee, 2, MidpointRounding.AwayFromZero);
+        internal double getCharge(double eventFee, string eventName, double totalCheckedInHours, int overHrs, double overRate, int addTime, double addRate, int hrs) {
+            int i = 0;
+            double charge = 0;
+            if (CheckIfHourly(eventName))
+            {
+                while (i < hrs && i < addTime)
+                {
+                    charge += eventFee;
+                    i++;
+                }
+                while (i < hrs && i < overHrs)
+                {
+                    charge += addRate;
+                    i++;
+                } while (i < hrs)
+                {
+                    charge += overRate;
+                    i++;
+                }
             }
-            eventFee = eventFee - GetBillingCap(eventName, guardianID, eventFee);
-            if (totalCheckedInHours < 0) {
-                eventFee = 0;
+            else
+            {
+                charge = eventFee;
+            }            
+            charge = Math.Round(charge, 2, MidpointRounding.AwayFromZero);
+            charge = charge - GetBillingCap(eventName, guardianID, charge);
+            if (totalCheckedInHours < 0)
+            {
+                charge = 0;
             }
-            return eventFee;
+                /*
+                if (CheckIfHourly(eventName)) {
+                    eventFee = eventFee * totalCheckedInHours;
+                    eventFee = Math.Round(eventFee, 2, MidpointRounding.AwayFromZero);
+                }
+                eventFee = eventFee - GetBillingCap(eventName, guardianID, eventFee);
+                if (totalCheckedInHours < 0) {
+                    eventFee = 0;
+                }
+                */
+                return charge;
         }
 
         public void CompleteTransaction(double eventFee, string name, string date) {
@@ -91,6 +169,7 @@ namespace GuardianTools {
             }
         }
 
+        //Below method should be helpful in adding additional late fees retrieved from the EventDB
         internal double CalculateLateFee(string date) {
             TransactionDB transDB = new TransactionDB();
             EventDB eventDB = new EventDB();
@@ -105,11 +184,11 @@ namespace GuardianTools {
 
         internal bool CheckIfHourly(string eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
-            if (eventData == null) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if (EventDataT == null) {
                 return false;
             }
-            if (String.IsNullOrWhiteSpace(eventData[1])) {
+            if (String.IsNullOrWhiteSpace(EventDataT[1])) {
                 return false;
             }
             return true;
@@ -119,38 +198,38 @@ namespace GuardianTools {
             EventDB eventDB = new EventDB();
             bool discount = false;
             int childrenCheckedIn = db.NumberOfCheckedIn(guardianID);
-            string[] eventData = eventDB.GetEvent(eventName);
-            if ((childrenCheckedIn > 1) && (!String.IsNullOrWhiteSpace(eventData[2]) || !String.IsNullOrWhiteSpace(eventData[4]))) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if ((childrenCheckedIn > 1) && (!String.IsNullOrWhiteSpace(EventDataT[2]) || !String.IsNullOrWhiteSpace(EventDataT[4]))) {
                 discount = true;
             }
-            if (eventData == null) {
+            if (EventDataT == null) {
                 return 0.0;
             }
             if (discount) {
-                if (String.IsNullOrWhiteSpace(eventData[2])) {
-                    return Convert.ToDouble(eventData[4]);
+                if (String.IsNullOrWhiteSpace(EventDataT[2])) {
+                    return Convert.ToDouble(EventDataT[4]);
                 } else {
-                    return Convert.ToDouble(eventData[2]);
+                    return Convert.ToDouble(EventDataT[2]);
                 }
             } else {
-                if (String.IsNullOrWhiteSpace(eventData[1])) {
-                    return Convert.ToDouble(eventData[3]);
+                if (String.IsNullOrWhiteSpace(EventDataT[1])) {
+                    return Convert.ToDouble(EventDataT[3]);
                 } else {
-                    return Convert.ToDouble(eventData[1]);
+                    return Convert.ToDouble(EventDataT[1]);
                 }
             }
         }
 
         internal double GetStrictEventFee(string eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
-            if (eventData == null) {
+            string[] EventDataT = eventDB.GetEvent(eventName);
+            if (EventDataT == null) {
                 return 0.0;
             }
-            if (String.IsNullOrWhiteSpace(eventData[1])) {
-                return Convert.ToDouble(eventData[3]);
+            if (String.IsNullOrWhiteSpace(EventDataT[1])) {
+                return Convert.ToDouble(EventDataT[3]);
             } else {
-                return Convert.ToDouble(eventData[1]);
+                return Convert.ToDouble(EventDataT[1]);
             }
         }
 
