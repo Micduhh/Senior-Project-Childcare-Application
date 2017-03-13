@@ -51,9 +51,12 @@ namespace AdminTools {
                     }
                 } else {
                     WPFMessageBox.Show("User ID or PIN does not exist");
+                    /*
                     int accessLevel = db.GetAccessLevel(ID);
                     DisplayAdminWindow(accessLevel, txt_UserName.Text);
+                    */
                 }
+
             }
         }
 
