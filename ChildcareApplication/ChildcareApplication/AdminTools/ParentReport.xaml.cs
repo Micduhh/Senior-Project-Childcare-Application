@@ -391,8 +391,6 @@ namespace AdminTools {
                     {
                         MessageBox.Show("This is read-only");
                     }
-
-                    MessageBox.Show(e.Message);
                 }
                 finally
                 {

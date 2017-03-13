@@ -229,8 +229,12 @@ namespace AdminTools {
                 List<string> allowanceIDs = conDB.GetAllowanceIDsOnNames(txt_GuardianName.Text, txt_ChildName.Text);
 
                 if (allowanceIDs.Count > 1) {
-                    SelectGuardian selectGuardian = new SelectGuardian(allowanceIDs, this);
-                    selectGuardian.ShowDialog();
+                    try
+                    {
+                        SelectGuardian selectGuardian = new SelectGuardian(allowanceIDs, this);
+                        selectGuardian.ShowDialog();
+                    }
+                    catch (Exception) { }
                 } else {
                     this.allowanceID = allowanceIDs[0];
                 }
