@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue" ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" ResizeMode="NoResize">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True">
         <Grid>
             <DataGrid x:Name="TransactionDataGrid" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Height="551" Width="776" IsReadOnly="True" MouseLeftButtonUp="TransactionDataGrid_MouseLeftButtonUp" Background="#FFE6EAE0" RowBackground="#FFE6EAE0" FontSize="14" SelectionMode="Single" ToolTip="Click an event to load the transaction ID into the above box.">

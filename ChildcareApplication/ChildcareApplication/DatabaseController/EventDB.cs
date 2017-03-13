@@ -11,9 +11,139 @@ namespace DatabaseController {
         public EventDB() {
             this.dbCon = new SQLiteConnection("Data Source=../../../Database/ChildcareDB.s3db;Version=3;");
         }
-        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', '" + hourlyDiscount + "', null, null, null, null, null, null, null);";
+
+        public void DBInitialize()
+        {
+            try
+            {
+                dbCon.Open();
+                //string query1 = "ALTER TABLE EventDataT ADD COLUMN EventMaximumHoursRate FLOAT(20)";
+                //string query2 = "ALTER TABLE EventDataT ADD COLUMN AdditionalRateTime INT(20)";
+                //string query3 = "ALTER TABLE EventDataT DROP COLUMN AdditionalRateAmount INTEGER(20)";
+                //ExecuteQuery(query1);
+                //ExecuteQuery(query2);
+                //ExecuteQuery(query3);
+            }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        public void DBCreate()
+        {
+            try
+            {
+                dbCon.Open();
+                string sql = "CREATE TABLE if not exists`EventDataT` ("
+    + "`EventName`	varchar(50) NOT NULL,"
+    + "`HourlyPrice`	float,"
+    + "`HourlyDiscount`	float,"
+    + "`DailyPrice`	float,"
+    + "`DailyDiscount`	float,"
+    + "`EventMonth`	int,"
+    + "`EventDay`	int,"
+    + "`EventWeekday`	varchar(10),"
+    + "`EventMaximumHours`	int,"
+    + "`EventDeletionDate`	date,"
+    + "`EventMaximumHoursRate`	float(20),"
+    + "`AdditionalRateTime`	int(20),"
+    + "`AdditionalRateAmount`	float(20),"
+    + "PRIMARY KEY(EventName));";
+                ExecuteQuery(sql);
+                dbCon.Close();
+   }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        public void DBCopy()
+        {
+            try
+            {
+                dbCon.Open();
+                string sql = "INSERT INTO EventDataT SELECT * FROM EventDataT;";
+                ExecuteQuery(sql);
+            }
+            catch(SQLiteException)
+            {
+
+            }
+
+
+        }
+
+        private void ExecuteQuery(string query)
+        {
+            var cmd = new SQLiteCommand(query, dbCon);
+            cmd.ExecuteNonQuery();
+        }
+
+        public string[] FindEventData(string eventName)
+        {
+            string sql = "select * " +
+                         "from EventDataT " +
+                         "where EventName = @EventName";
+            SQLiteCommand command = new SQLiteCommand(sql, dbCon);
+            command.Parameters.Add(new SQLiteParameter("@EventName", eventName));
+            SQLiteDataAdapter DB = new SQLiteDataAdapter(command);
+            DataSet DS = new DataSet();
+            try
+            {
+                dbCon.Open();
+                DB.Fill(DS);
+                int cCount = DS.Tables[0].Columns.Count;
+                string[] eventDataT = new string[cCount];
+                for (int x = 0; x < cCount; x++)
+                {
+                    try
+                    {
+                        eventDataT[x] = DS.Tables[0].Rows[0][x].ToString();
+                    }
+                    catch (Exception)
+                    {
+                        eventDataT[x] = "0";
+                    }
+                }
+                dbCon.Close();
+                return eventDataT;
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+                WPFMessageBox.Show("Database connection error. Please insure the database exists, and is accessible.");
+                dbCon.Close();
+                return null;
+            }
+            catch (Exception)
+            {
+                dbCon.Close();
+                WPFMessageBox.Show("Unable to retrieve original EventDB.");
+                return null;
+            }
+        }
+
+        //This is this one we messed with (and works)!!!
+        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            //query += "', '" + hourlyDiscount + "', null, null, null, null, null, null, null);";
+            query += "', '" + hourlyDiscount + "', null, null, null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
+                try {
+                dbCon.Open();
+                SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
+                cmd.ExecuteNonQuery();
+
+                dbCon.Close();
+            } catch (Exception exception) {
+                WPFMessageBox.Show(exception.Message);
+                dbCon.Close();
+            }
+        }
+
+        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double dailyDiscount, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -26,9 +156,9 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double dailyDiscount) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', null, null, null, null, null);";
+        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, Double hourlyDiscount, int eventMonth, int eventDay, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            query += "', '" + hourlyDiscount + "', null, null, '" + eventMonth + "', '" + eventDay + "', null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -41,9 +171,9 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, Double hourlyDiscount, int eventMonth, int eventDay) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', '" + hourlyDiscount + "', null, null, '" + eventMonth + "', '" + eventDay + "', null, null, null);";
+        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, Double dailyDiscount, int eventMonth, int eventDay, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', '" + eventMonth + "', '" + eventDay + "', null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -56,9 +186,9 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, Double dailyDiscount, int eventMonth, int eventDay) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', '" + eventMonth + "', '" + eventDay + "', null, null, null);";
+        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, Double hourlyDiscount, String weekday, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            query += "', '" + hourlyDiscount + "', null, null, null, null, '" + weekday + "','" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -71,9 +201,9 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, Double hourlyDiscount, String weekday) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', '" + hourlyDiscount + "', null, null, null, null, '" + weekday + "', null, null);";
+        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, Double dailyDiscount, String weekday, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', null, null, '" + weekday + "', '" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -86,9 +216,11 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, Double dailyDiscount, String weekday) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', '" + dailyDiscount + "', null, null, '" + weekday + "', null, null);";
+        
+
+        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            query += "',  null, null, null, null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -101,9 +233,11 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "',  null, null, null, null, null, null, null, null);";
+        
+
+        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', null, null, null, null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -116,9 +250,9 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', null, null, null, null, null, null);";
+        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, int eventMonth, int eventDay, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            query += "', null, null, null, '" + eventMonth + "', '" + eventDay + "', null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -131,9 +265,9 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, int eventMonth, int eventDay) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', null, null, null, '" + eventMonth + "', '" + eventDay + "', null, null, null);";
+        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, int eventMonth, int eventDay, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', null, '" + eventMonth + "', '" + eventDay + "', null,'" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -146,9 +280,9 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, int eventMonth, int eventDay) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', null, '" + eventMonth + "', '" + eventDay + "', null, null, null);";
+        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, String weekday, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', '" + hourlyPrice;
+            query += "', null, null, null, null, null, '" + weekday + "','" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -161,9 +295,9 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, String weekday) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', '" + hourlyPrice;
-            query += "', null, null, null, null, null, '" + weekday + "', null, null);";
+        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, String weekday, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "INSERT INTO EventDataT VALUES ('" + eventName + "', null ";
+            query += ", null, '" + dailyPrice + "', null, null, null, '" + weekday + "','" + OverHour + "', null,'" + OverRate + "', '" + AddtTime + "', '" + AddtRate + "');";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -176,23 +310,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, String weekday) {
-            String query = "INSERT INTO EventData VALUES ('" + eventName + "', null ";
-            query += ", null, '" + dailyPrice + "', null, null, null, '" + weekday + "', null, null);";
-            try {
-                dbCon.Open();
-                SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
-                cmd.ExecuteNonQuery();
-
-                dbCon.Close();
-            } catch (Exception exception) {
-                WPFMessageBox.Show(exception.Message);
-                dbCon.Close();
-            }
-        }
-
-        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, Double hourlyDiscount, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = " + hourlyDiscount + ", DailyPrice = null, DailyDiscount = null, EventMonth = null,";
             query += " EventWeekday = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -207,8 +326,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double dailyDiscount, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, Double dailyDiscount, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = " + dailyDiscount + ", HourlyPrice = null, HourlyDiscount = null, EventMonth = null,";
             query += " EventDay = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -223,8 +342,8 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, Double hourlyDiscount, int eventMonth, int eventDay, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, Double hourlyDiscount, int eventMonth, int eventDay, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = " + hourlyDiscount + ", EventMonth = " + eventMonth + ", EventDay = " + eventDay;
             query += ", DailyPrice = null, DailyDiscount = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -239,8 +358,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, Double dailyDiscount, int eventMonth, int eventDay, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, Double dailyDiscount, int eventMonth, int eventDay, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = " + dailyDiscount + ", EventMonth = " + eventMonth + ", EventDay = " + eventDay;
             query += ", HourlyPrice = null, HourlyDiscount = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -255,8 +374,8 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, Double hourlyDiscount, String weekday, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, Double hourlyDiscount, String weekday, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = " + hourlyDiscount + ", EventWeekday = '" + weekday + "', DailyPrice = null,";
             query += " DailyDiscount = null, EventMonth = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -271,8 +390,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, Double dailyDiscount, String weekday, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, Double dailyDiscount, String weekday, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = " + dailyDiscount + ", EventWeekday = '" + weekday + "', HourlyPrice = null,";
             query += " HourlyDiscount = null, EventMonth = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -287,8 +406,8 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceAlwaysAvailable(String eventName, Double hourlyPrice, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = null, DailyPrice = null, DailyDiscount = null, EventMonth = null,";
             query += " EventWeekday = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -303,8 +422,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceAlwaysAvailable(String eventName, Double dailyPrice, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = null, HourlyPrice = null, HourlyDiscount = null, EventMonth = null,";
             query += " EventDay = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -319,8 +438,8 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, int eventMonth, int eventDay, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceSpecificDay(String eventName, Double hourlyPrice, int eventMonth, int eventDay, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = null, EventMonth = " + eventMonth + ", EventDay = " + eventDay;
             query += ", DailyPrice = null, DailyDiscount = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -335,8 +454,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, int eventMonth, int eventDay, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceSpecificDay(String eventName, Double dailyPrice, int eventMonth, int eventDay, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = null, EventMonth = " + eventMonth + ", EventDay = " + eventDay;
             query += ", HourlyPrice = null, HourlyDiscount = null, EventWeekday = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -351,8 +470,8 @@ namespace DatabaseController {
             }
         }
 
-        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, String weekday, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
+        public void HourlyPriceWeeklyOcur(String eventName, Double hourlyPrice, String weekday, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', HourlyPrice = " + hourlyPrice + ", ";
             query += "HourlyDiscount = null, EventWeekday = '" + weekday + "', DailyPrice = null,";
             query += " DailyDiscount = null, EventMonth = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -367,8 +486,8 @@ namespace DatabaseController {
             }
         }
 
-        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, String weekday, String oldEventName) {
-            String query = "UPDATE EventData SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
+        public void DailyPriceWeeklyOcur(String eventName, Double dailyPrice, String weekday, String oldEventName, Double AddtRate, int AddtTime, Double OverRate, int OverHour) {
+            String query = "UPDATE EventDataT SET EventName = '" + eventName + "', DailyPrice = " + dailyPrice + ", ";
             query += "DailyDiscount = null, EventWeekday = '" + weekday + "', HourlyPrice = null,";
             query += " HourlyDiscount = null, EventMonth = null, EventDay = null WHERE EventName = '" + oldEventName + "';";
             try {
@@ -392,7 +511,7 @@ namespace DatabaseController {
             try {
                 dbCon.Open();
 
-                string query = "Select count(*) from EventData where EventName = '" + eventName + "';";
+                string query = "Select count(*) from EventDataT where EventName = '" + eventName + "';";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
 
@@ -410,7 +529,7 @@ namespace DatabaseController {
         }
 
         public List<string> GetAllEventNames() {
-            String query = "SELECT EventName FROM EventData Where EventDeletionDate IS null;";
+            String query = "SELECT EventName FROM EventDataT Where EventDeletionDate IS null;";
             List<string> results = new List<string>();
 
             try {
@@ -435,7 +554,8 @@ namespace DatabaseController {
         public DataTable GetEventDisplay() {
             String query = "SELECT EventName AS 'Event Name', HourlyPrice AS 'Hourly Price', HourlyDiscount AS 'Hourly Discount', ";
             query += "DailyPrice AS 'Daily Price', DailyDiscount AS 'Daily Discount', EventMonth AS 'Event Month', ";
-            query += "EventDay AS 'Event Day', EventWeekday AS 'Event Weekday', EventMaximumHours AS 'Maximum Hours' FROM EventData WHERE EventDeletionDate IS null;";
+            query += "EventDay AS 'Event Day', EventWeekday AS 'Event Weekday', EventMaximumHours AS 'Overtime Hours', EventMaximumHoursRate AS 'Overtime Rate',";
+            query += "AdditionalRateTime AS 'Additional Hour', AdditionalRateAmount AS 'Additional Rate' FROM EventDataT WHERE EventDeletionDate IS null;";
             DataTable table;
 
             try {
@@ -458,7 +578,7 @@ namespace DatabaseController {
 
         public string[] GetEvent(string eventName) {
             string sql = "select * " +
-                  "from EventData " +
+                  "from EventDataT " +
                   "where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
@@ -468,12 +588,12 @@ namespace DatabaseController {
                 dbCon.Open();
                 DB.Fill(DS);
                 int cCount = DS.Tables[0].Columns.Count;
-                string[] eventData = new string[cCount];
+                string[] EventDataT = new string[cCount];
                 for (int x = 0; x < cCount; x++) {
-                    eventData[x] = DS.Tables[0].Rows[0][x].ToString();
+                    EventDataT[x] = DS.Tables[0].Rows[0][x].ToString();
                 }
                 dbCon.Close();
-                return eventData;
+                return EventDataT;
             } catch (System.Data.SQLite.SQLiteException) {
                 WPFMessageBox.Show("Database connection error. Please insure the database exists, and is accessible. Please insure the charge was calculated correctly.");
                 dbCon.Close();
@@ -486,7 +606,7 @@ namespace DatabaseController {
         }
 
         public void UpdateMaxHours(string eventName, string maxHours) {
-            String query = "UPDATE EventData SET EventMaximumHours = " + maxHours + " Where EventName = '" + eventName + "';";
+            String query = "UPDATE EventDataT SET EventMaximumHours = " + maxHours + " Where EventName = '" + eventName + "';";
             try {
                 dbCon.Open();
                 SQLiteCommand cmd = new SQLiteCommand(query, dbCon);
@@ -499,9 +619,73 @@ namespace DatabaseController {
             }
         }
 
+        internal void UpdateMaxHourPrice(string maxHour, float maxHourPrice)
+        {
+            string query = $"UPDATE EventDataT SET EventMaximumHoursRate = @maxHourPrice WHERE EventName = @maxHour";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("maxHourPrice", maxHourPrice);
+                command.Parameters.AddWithValue("maxHour", maxHour);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch(SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        internal void UpdateAdditionalTime(string additionalTime, float additionalTimeUpdate)
+        {
+            string query = $"UPDATE EventDataT SET AdditionalRateTime = @additionalTimeUpdate WHERE EventName = @additionalTime";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("additionalTimeUpdate", additionalTimeUpdate);
+                command.Parameters.AddWithValue("additionalTime", additionalTime);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch (SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
+        // AdditionalRateAmount
+        internal void UpdateAdditionalRate(string eventName, float updatedAdditionalRate)
+        {
+            string query = $"UPDATE EventDataT SET AdditionalRateAmount = @updatedAdditionalRate WHERE EventName = @eventName";
+
+            try
+            {
+                dbCon.Open();
+                var command = new SQLiteCommand(query, dbCon);
+                command.Parameters.AddWithValue("updatedAdditionalRate", updatedAdditionalRate);
+                command.Parameters.AddWithValue("eventName", eventName);
+
+                command.ExecuteNonQuery();
+
+                dbCon.Close();
+            }
+            catch (SQLiteException e)
+            {
+                WPFMessageBox.Show(e.Message);
+            }
+        }
+
         public double GetEventHourCap(string eventName) {
             String sql = "select EventMaximumHours " +
-                         "from EventData " +
+                         "from EventDataT " +
                          "where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
@@ -532,7 +716,7 @@ namespace DatabaseController {
             string day = Convert.ToDateTime(dateTime).ToString("dd");
             string dayOfWeek = dt.DayOfWeek.ToString();
             string sql = "select EventName " +
-                         "from EventData " +
+                         "from EventDataT " +
                          "where ((EventDay= @day and EventMonth= @month or " +
                          "EventWeekday= @dayOfWeek or EventName='Regular Childcare') " +
                          "and EventDeletionDate is NULL) or (EventDay is NULL and EventMonth is NULL " +
@@ -565,9 +749,10 @@ namespace DatabaseController {
             }
         }
 
+        //This may be helpful in determining how to extract the overtime fee and add it to the late fee
         public double GetLateFee(string eventName) {
             string sql = "select HourlyPrice " +
-                         "from EventData " +
+                         "from EventDataT " +
                          "where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
@@ -591,14 +776,14 @@ namespace DatabaseController {
 
         public void DeleteEvent(string eventName) {
             /*
-            string sql = "Update EventData Set EventDeletionDate = @date " +
+            string sql = "Update EventDataT Set EventDeletionDate = @date " +
                          "where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
             command.Parameters.Add(new SQLiteParameter("@date", DateTime.Now.ToString("yyyy-MM-dd")));
             */
             //Beginning of newly added DeleteEvent
-            string sql = "Delete from EventData where EventName = @eventName";
+            string sql = "Delete from EventDataT where EventName = @eventName";
             SQLiteCommand command = new SQLiteCommand(sql, dbCon);
             command.Parameters.Add(new SQLiteParameter("@eventName", eventName));
             //End of newly added DeleteEvent

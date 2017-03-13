@@ -9,8 +9,8 @@
                     <Border x:Name="ButtonBorder" 
                   CornerRadius="25,25,25,25" 
                   BorderThickness="4,4,4,4" 
-                  Background="#FF6981AE"  
-                  BorderBrush="#FF6981AE"
+                  Background="#FF4F8B90"  
+                  BorderBrush="#FF4F8B90"
                   RenderTransformOrigin="0.5,0.5">
                         <Grid Name="btnGrid">
                             <Grid.RowDefinitions>
@@ -20,8 +20,8 @@
                             <Border Grid.Row="0" CornerRadius="23,23,0,0">
                                 <Border.Background>
                                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Color="#FF264F6A" Offset="0"/>
-                                        <GradientStop Color="#FF6981AE" Offset="1"/>
+                                        <GradientStop Color="#FF4F8B90" Offset="0"/>
+                                        <GradientStop Color="#FF4F8B90" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
                             </Border>
@@ -55,8 +55,8 @@
                             <Border x:Name="ButtonBorder" 
                   CornerRadius="25,25,25,25" 
                   BorderThickness="4,4,4,4" 
-                  Background="#FFBAC3D3"  
-                  BorderBrush="#FFBAC3D3"
+                  Background="#FF4F8B90"  
+                  BorderBrush="#FF4F8B90"
                   RenderTransformOrigin="0.5,0.5">
                                 <Grid Name="btnGrid">
                                     <Grid.RowDefinitions>
@@ -66,8 +66,8 @@
                                     <Border Grid.Row="0" CornerRadius="23,23,0,0">
                                         <Border.Background>
                                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                <GradientStop Color="#FF7C95A5" Offset="0"/>
-                                                <GradientStop Color="#FFBAC3D3" Offset="1"/>
+                                                <GradientStop Color="#FF4F8B90" Offset="0"/>
+                                                <GradientStop Color="#FF4F8B90" Offset="1"/>
                                             </LinearGradientBrush>
                                         </Border.Background>
                                     </Border>

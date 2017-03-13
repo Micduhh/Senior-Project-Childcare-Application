@@ -44,18 +44,53 @@ namespace ChildcareApplication {
                 try {
                     System.Diagnostics.Process.Start("C:/Users/Public/Documents" + "/Childcare Application/Childcare Application User Manual.pdf");
                 } catch (System.IO.FileNotFoundException) {
-                    WPFMessageBox.Show("Unable to open user manual. It may not exist.");
+                    try
+                    {
+                        //New method:                            
+                        string currDir = Directory.GetCurrentDirectory();
+                        string resultDir = getGreatGrandParent();
+                        string imageDir = resultDir + "/Childcare Application/Childcare Application User Manual.pdf";
+                        System.Diagnostics.Process.Start(imageDir);
+
+                    }
+                    catch (Exception)
+                    {
+                        WPFMessageBox.Show("Unable to open user manual. It may not exist.");
+                    }                    
                 } catch (Exception) {
+
                     WPFMessageBox.Show("Unable to open user manual.");
                 }
             } else {
-                WPFMessageBox.Show("Unable to open user manual.");
+                try
+                {
+                    //New method:                            
+                    string currDir = Directory.GetCurrentDirectory();
+                    string resultDir = getGreatGrandParent();
+                    string imageDir = resultDir + "/Childcare Application User Manual.pdf";
+                    System.Diagnostics.Process.Start(imageDir);
+
+                }
+                catch (Exception)
+                {
+                    WPFMessageBox.Show("Unable to open user manual. It may not exist.");
+                }
             }
         }
 
         private void btn_About_Click(object sender, RoutedEventArgs e) {
             AboutWindow about = new AboutWindow();
             about.ShowDialog();
+        }
+
+        private string getGreatGrandParent()
+        {
+            string currDir = Directory.GetCurrentDirectory();
+            DirectoryInfo tempDir1 = null;
+            DirectoryInfo tempDir2 = Directory.GetParent(currDir);
+            tempDir1 = Directory.GetParent(tempDir2.ToString());
+            tempDir2 = Directory.GetParent(tempDir1.ToString());
+            return tempDir2.ToString();
         }
     }
 }

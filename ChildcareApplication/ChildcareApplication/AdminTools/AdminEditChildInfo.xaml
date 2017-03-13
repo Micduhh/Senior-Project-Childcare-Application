@@ -6,7 +6,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" Width="800" Height="700" ClipToBounds="True">
         <Grid Margin="0,-1,0,1">
             <Canvas x:Name="cnv_ChildIcon" HorizontalAlignment="Left" Height="152" Margin="32,46,0,0" VerticalAlignment="Top" Width="158" Background="#FFE6EAE0" ToolTip="Picture of the logged in Child."/>

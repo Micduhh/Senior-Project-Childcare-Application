@@ -10,7 +10,11 @@ using System.Windows.Input;
 namespace AdminTools {
     public partial class AddEditEventWindow : Window {
         private bool valueChanged, maxHoursChanged;
+        private bool _maxHourPriceChanged;
+        private bool _addtlTimeChanged;
+        private bool _addtnlRateChanged;
         String oldEventName;
+        private bool _windowLoaded = false;
 
         public AddEditEventWindow() {
             InitializeComponent();
@@ -29,6 +33,7 @@ namespace AdminTools {
             }
             this.oldEventName = oldEventName;
             this.MouseDown += WindowMouseDown;
+
         }
 
         private void ProtectEvents(string oldEventName) {
@@ -47,45 +52,55 @@ namespace AdminTools {
         }
 
         private void btn_Submit_Click(object sender, RoutedEventArgs e) {
-            if (this.valueChanged) {
+            if (this.valueChanged)
+            {
                 ProcessModification();
-            } else {
+            } else
+            {
                 WPFMessageBox.Show("You have not changed any values!  If you would like to return to the previous window without making changes, please hit cancel.");
             }
         }
 
         private void LoadData(String eventName) {
             EventDB eventDB = new EventDB();
-            string[] eventData = eventDB.GetEvent(eventName);
+            string[] EventDataT = eventDB.GetEvent(eventName);
 
-            txt_EventName.Text = eventData[0];
+            txt_EventName.Text = EventDataT[0];
 
-            SetPriceCombo(eventData);
-            SetAvailability(eventData);
-            SetMaxHours(eventData);
+            SetPriceCombo(EventDataT);
+            SetAvailability(EventDataT);
+            FillFields(EventDataT);
         }
 
-        private void SetPriceCombo(string[] eventData) {
-            if (eventData[1] != "") { //hourly price
+        private void FillFields(string[] eventData)
+        {
+            SetMaxHours(eventData);
+            SetMaxHourPrice(eventData);
+            SetAdditionalRateTime(eventData);
+            SetAdditionalRate(eventData);
+        }
+
+        private void SetPriceCombo(string[] EventDataT) {
+            if (EventDataT[1] != "") { //hourly price
                 cmb_PriceType.SelectedIndex = 0;
-                txt_Rate.Text = eventData[1];
-                if (eventData[2] != "") {
-                    txt_DiscountPrice.Text = eventData[2];
+                txt_Rate.Text = EventDataT[1];
+                if (EventDataT[2] != "") {
+                    txt_DiscountPrice.Text = EventDataT[2];
                 }
-            } else if (eventData[3] != "") { //daily price
+            } else if (EventDataT[3] != "") { //daily price
                 cmb_PriceType.SelectedIndex = 1;
-                txt_Rate.Text = eventData[3];
-                if (eventData[4] != "") {
-                    txt_DiscountPrice.Text = eventData[4];
+                txt_Rate.Text = EventDataT[3];
+                if (EventDataT[4] != "") {
+                    txt_DiscountPrice.Text = EventDataT[4];
                 }
             }
         }
 
-        private void SetAvailability(string[] eventData) {
-            if (eventData[5] != "" && eventData[6] != "") { //specific day
+        private void SetAvailability(string[] EventDataT) {
+            if (EventDataT[5] != "" && EventDataT[6] != "") { //specific day
                 cmb_Occurence.SelectedIndex = 1;
-                txt_MonthNum.Text = eventData[5];
-                txt_DayOfMonth.Text = eventData[6];
+                txt_MonthNum.Text = EventDataT[5];
+                txt_DayOfMonth.Text = EventDataT[6];
                 lbl_DayNum.Visibility = Visibility.Visible;
                 lbl_MonthNum.Visibility = Visibility.Visible;
                 txt_DayOfMonth.Visibility = Visibility.Visible;
@@ -93,8 +108,8 @@ namespace AdminTools {
 
                 lbl_DayName.Visibility = Visibility.Hidden;
                 cmb_DayName.Visibility = Visibility.Hidden;
-            } else if (eventData[7] != "") { //weekday
-                String dayName = eventData[7];
+            } else if (EventDataT[7] != "") { //weekday
+                String dayName = EventDataT[7];
                 cmb_Occurence.SelectedIndex = 2;
                 //show day name
                 lbl_DayName.Visibility = Visibility.Visible;
@@ -110,9 +125,35 @@ namespace AdminTools {
             }
         }
 
-        private void SetMaxHours(string[] eventInfo) {
-            if (eventInfo[8] != null) {
+        private void SetMaxHours(string[] eventInfo)
+        {
+            if (eventInfo[8] != null)
+            {
                 txt_MaxHours.Text = eventInfo[8];
+            }
+        }
+
+        private void SetMaxHourPrice(string[] eventInfo)
+        {
+            if(eventInfo[10] != null)
+            {
+                tbx_OvertimeRate.Text = eventInfo[10];
+            }
+        }
+
+        private void SetAdditionalRateTime(string[] eventInfo)
+        {
+            if(eventInfo[11] != null)
+            {
+                Addtl_Rate_Time.Text = eventInfo[11];
+            }
+        }
+
+        private void SetAdditionalRate(string[] eventInfo)
+        {
+            if(eventInfo[12] != null)
+            {
+                Addtl_Rate_Amt.Text = eventInfo[12];
             }
         }
 
@@ -172,14 +213,66 @@ namespace AdminTools {
                 } else {
                     EditEventNoDiscount();
                 }
-                if (this.maxHoursChanged) {
-                    EventDB eventDB = new EventDB();
-                    if (txt_MaxHours.Text != "") {
+
+                EventDB eventDB = new EventDB();
+                string eventName = txt_EventName.Text;
+
+                if (this.maxHoursChanged)
+                {
+                    
+                    if (txt_MaxHours.Text != "")
+                    {
                         eventDB.UpdateMaxHours(txt_EventName.Text, "'" + txt_MaxHours.Text + "'");
                     } else {
                         eventDB.UpdateMaxHours(txt_EventName.Text, "null");
                     }
                 }
+
+                if(_maxHourPriceChanged)
+                {
+                    string maxHourRate = tbx_OvertimeRate.Text;
+                    float.TryParse(maxHourRate, out float updatedMaxHourRate);
+
+                    if (!string.IsNullOrEmpty(maxHourRate))
+                    {                        
+                        eventDB.UpdateMaxHourPrice(eventName, updatedMaxHourRate);
+                    }
+                    else
+                    {
+                        eventDB.UpdateMaxHourPrice(eventName, updatedMaxHourRate);
+                    }
+                }
+
+                if (_addtlTimeChanged)
+                {
+                    string additionalTime = Addtl_Rate_Time.Text;
+                    if (!string.IsNullOrEmpty(additionalTime))
+                    {
+                        float.TryParse(additionalTime, out float updatedAddtlTime);
+
+                        eventDB.UpdateAdditionalTime(eventName, updatedAddtlTime);
+                    }
+                    else
+                    {
+                        eventDB.UpdateAdditionalTime(eventName, 0);
+                    }
+                }
+
+                if (_addtnlRateChanged)
+                {
+                    string additionalRate = Addtl_Rate_Amt.Text;
+                    if (!string.IsNullOrEmpty(additionalRate))
+                    {
+                        float.TryParse(additionalRate, out float updatedRate);
+
+                        eventDB.UpdateAdditionalRate(eventName, updatedRate);
+                    }
+                    else
+                    {
+                        eventDB.UpdateAdditionalRate(eventName, 0);
+                    }
+                }
+
                 CloseWindow();
             }
         }
@@ -219,12 +312,27 @@ namespace AdminTools {
                 cmb_Occurence.Focus();
                 return false;
             }
-            if (txt_MaxHours.Text.Equals("") && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
+            if (!int.TryParse(txt_MaxHours.Text, out int updatedMaxHour) && txt_MaxHours.Text.Equals("") && !ValidDoubleGreaterThanZero(txt_MaxHours.Text)) {
                 WPFMessageBox.Show("You must enter a valid number greater than zero in the maximum hours text box.");
                 txt_MaxHours.Focus();
                 return false;
             }
-            if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
+
+            if(!int.TryParse(Addtl_Rate_Time.Text, out int newTime) || !ValidDoubleGreaterThanZero(Addtl_Rate_Time.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid number greater than 0");
+                Addtl_Rate_Time.Focus();
+                return false;
+            }
+
+            if(!float.TryParse(Addtl_Rate_Amt.Text, out float newAmount) || !ValidDoubleGreaterThanZero(Addtl_Rate_Amt.Text))
+            {
+                WPFMessageBox.Show("You must enter a valid number greater than 0");
+                Addtl_Rate_Amt.Focus();
+                return false;
+            }
+
+            if(!ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text) || !ValidDoubleGreaterThanZero(tbx_OvertimeRate.Text))
             {
                 WPFMessageBox.Show("You must enter a valid dollar figure greater than zero in the Overtime Price box.");
                 tbx_OvertimeRate.Focus();
@@ -295,70 +403,147 @@ namespace AdminTools {
         }
 
         private void AddEventDiscount() {
+            //Overtime Time
+            var ot_time = Convert.ToInt32(txt_MaxHours.Text);
+            //Overtime Rate
+            var ot_rate = Convert.ToDouble(tbx_OvertimeRate.Text);
+            //Addtl Rate
+            var addtl_rate = Convert.ToDouble(Addtl_Rate_Amt.Text);
+            //Addtl Rate Time
+            var addtl_rate_time = Convert.ToInt32(Addtl_Rate_Time.Text);
+
             EventDB db = new EventDB();
-            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0) {
-                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text));
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0) {
-                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text));
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1) {
-                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text));
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1) {
-                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text));
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2) {
-                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString());
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2) {
-                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString());
+            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.DailyPriceAlwaysAvailable(txt_EventName.Text, 
+                    Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.HourlyPriceSpecificDay(txt_EventName.Text,
+                    Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), 
+                    Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text),
+                    Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), 
+                    ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), addtl_rate, addtl_rate_time, ot_rate, ot_time);
             }
         }
 
         private void AddEventNoDiscount() {
+            //Overtime Time
+            var ot_time = Convert.ToInt32(txt_MaxHours.Text);
+            //Overtime Rate
+            var ot_rate = Convert.ToDouble(tbx_OvertimeRate.Text);
+            //Addtl Rate
+            var addtl_rate = Convert.ToDouble(Addtl_Rate_Amt.Text);
+            //Addtl Rate Time
+            var addtl_rate_time = Convert.ToInt32(Addtl_Rate_Time.Text);
             EventDB db = new EventDB();
-            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0) {
-                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text));
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0) {
-                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text));
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1) {
-                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text));
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1) {
-                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text));
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2) {
-                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString());
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2) {
-                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString());
+            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), addtl_rate, addtl_rate_time, ot_rate, ot_time);
             }
         }
 
         private void EditEventDiscount() {
+            //Overtime Time
+            var ot_time = Convert.ToInt32(txt_MaxHours.Text);
+            //Overtime Rate
+            var ot_rate = Convert.ToDouble(tbx_OvertimeRate.Text);
+            //Addtl Rate
+            var addtl_rate = Convert.ToDouble(Addtl_Rate_Amt.Text);
+            //Addtl Rate Time
+            var addtl_rate_time = Convert.ToInt32(Addtl_Rate_Time.Text);
             EventDB db = new EventDB();
-            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0) {
-                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0) {
-                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1) {
-                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1) {
-                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2) {
-                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2) {
-                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName);
+            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1)
+            {
+                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2)
+            {
+                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToDouble(txt_DiscountPrice.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
             }
         }
 
         private void EditEventNoDiscount() {
+            //Overtime Time
+            var ot_time = Convert.ToInt32(txt_MaxHours.Text);
+            //Overtime Rate
+            var ot_rate = Convert.ToDouble(tbx_OvertimeRate.Text);
+            //Addtl Rate
+            var addtl_rate = Convert.ToDouble(Addtl_Rate_Amt.Text);
+            //Addtl Rate Time
+            var addtl_rate_time = Convert.ToInt32(Addtl_Rate_Time.Text);
             EventDB db = new EventDB();
-            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0) {
-                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0) {
-                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1) {
-                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1) {
-                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2) {
-                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName);
-            } else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2) {
-                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName);
+            if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 0)
+            {
+                db.HourlyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 0) {
+                db.DailyPriceAlwaysAvailable(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 1) {
+                db.HourlyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 1) {
+                db.DailyPriceSpecificDay(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), Convert.ToInt32(txt_MonthNum.Text), Convert.ToInt32(txt_DayOfMonth.Text), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 0 && cmb_Occurence.SelectedIndex == 2) {
+                db.HourlyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
+            }
+            else if (cmb_PriceType.SelectedIndex == 1 && cmb_Occurence.SelectedIndex == 2) {
+                db.DailyPriceWeeklyOcur(txt_EventName.Text, Convert.ToDouble(txt_Rate.Text), ((ComboBoxItem)cmb_DayName.SelectedItem).Content.ToString(), this.oldEventName, addtl_rate, addtl_rate_time, ot_rate, ot_time);
             }
         }
 
@@ -395,10 +580,47 @@ namespace AdminTools {
             return false;
         }
 
-        private void txt_MaxHours_TextChanged(object sender, TextChangedEventArgs e) {
-            this.valueChanged = true;
-            this.maxHoursChanged = true;
+        #region TextChanged Listeners
+
+        private void txt_MaxHours_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                this.maxHoursChanged = true;
+            }
         }
+
+        private void tbx_OvertimeRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _maxHourPriceChanged = true;
+            }
+        }
+
+        private void Addtl_Rate_Time_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _addtlTimeChanged = true;
+            }
+        }
+
+        private void Addtl_Rate_Amt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_windowLoaded)
+            {
+                this.valueChanged = true;
+                _addtnlRateChanged = true;
+            }
+        }
+
+        
+
+        #endregion
 
         private void KeyUp_Event(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
@@ -414,9 +636,9 @@ namespace AdminTools {
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.valueChanged = true;
+            _windowLoaded = true;
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
