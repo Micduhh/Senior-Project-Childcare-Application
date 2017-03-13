@@ -6,7 +6,7 @@
         WindowStyle="None"
         Padding="0"
         Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen" Background="LightBlue" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True" HorizontalAlignment="Right" Width="420">
         <Grid Margin="-1,-2,-2,0" HorizontalAlignment="Right" Width="419">
             <Label x:Name="Additonal_Rate_Time" Content="Addtl. Rate Time" HorizontalAlignment="Right" Margin="0,256,271,0" VerticalAlignment="Top" Width="120" FontSize="14"/>

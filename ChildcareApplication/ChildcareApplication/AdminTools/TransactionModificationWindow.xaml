@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True">
         <Grid>
             <Label x:Name="lbl_FromExample" Content="(MM/DD/YYYY)" HorizontalAlignment="Left" Margin="20,309,0,0" VerticalAlignment="Top" Height="30" Width="96"/>

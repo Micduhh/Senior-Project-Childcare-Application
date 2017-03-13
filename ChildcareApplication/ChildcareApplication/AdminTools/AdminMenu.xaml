@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True" HorizontalAlignment="Left" Width="600" Height="400" VerticalAlignment="Top">
         <Grid Margin="-2,-2,-2,0" Height="400" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="600">
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_Logout" Content="_Logout" Margin="470,361,10,0" VerticalAlignment="Top" Height="29" Click="btn_Logout_Click" TabIndex="50" FontSize="16" Width="120"/>

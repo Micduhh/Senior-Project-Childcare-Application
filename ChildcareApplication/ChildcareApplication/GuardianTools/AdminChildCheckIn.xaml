@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" Width="800" Height="660" ClipToBounds="True">
         <Grid Margin="-1.6,-1.6,-2.4,-2.4">
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_Cancel" Content="_Close" HorizontalAlignment="Left" Margin="683,583,0,0" VerticalAlignment="Top" Width="107" Click="btn_Cancel_Click" RenderTransformOrigin="11.947,11.825" Height="67" FontSize="16"/>

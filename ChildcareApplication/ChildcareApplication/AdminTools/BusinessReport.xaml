@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True">
         <Grid Height="638" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="False" Margin="0,-2,0,0">
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_CurrentMonthReport" Content="Current _Month Report" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="184" Click="btn_CurrentMonthReport_Click" TabIndex="0"/>

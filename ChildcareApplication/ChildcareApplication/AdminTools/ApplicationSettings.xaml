@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        Background="LightBlue">
+        Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" Width="800" Height="660" ClipToBounds="True">
         <Grid>
             <Label x:Name="lbl_BillingDate" Content="Start of Billing Cycle (day of month)" HorizontalAlignment="Left" Margin="50,32,0,0" VerticalAlignment="Top" FontSize="14" Height="29"/>

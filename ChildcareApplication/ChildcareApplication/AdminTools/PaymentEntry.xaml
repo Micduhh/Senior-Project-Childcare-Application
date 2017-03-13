@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Padding="0"
-        WindowStartupLocation="CenterScreen" Background="LightBlue">
+        WindowStartupLocation="CenterScreen" Background="#FFB3E6DA" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
     <Border BorderBrush="LightBlue" BorderThickness="2" ClipToBounds="True">
         <Grid Margin="14,15,-2,-2" Height="225" VerticalAlignment="Top" HorizontalAlignment="Left" Width="285">
             <Label x:Name="lbl_CurrentBalance" Content="Current Balance:" Margin="30,30,31,0" VerticalAlignment="Top" Height="30" Width="217" FontSize="16"/>
