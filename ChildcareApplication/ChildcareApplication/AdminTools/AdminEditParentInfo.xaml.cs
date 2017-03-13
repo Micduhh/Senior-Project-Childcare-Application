@@ -349,16 +349,16 @@ namespace AdminTools {
             */
             string resultDir = getGreatGrandParent();
             string imageDir = resultDir + "\\Pictures\\default.jpg";
-            WPFMessageBox.Show("The current directory is: " + resultDir);
-            WPFMessageBox.Show("The directory we're pointing to is: " + resultDir);
-            WPFMessageBox.Show("The directory of the default image file is: " + imageDir);
+            //WPFMessageBox.Show("The current directory is: " + resultDir);
+            //WPFMessageBox.Show("The directory we're pointing to is: " + resultDir);
+            //WPFMessageBox.Show("The directory of the default image file is: " + imageDir);
 
             string imagePath = null;
             /**/
 
             try {
                 imagePath = @"" + resultDir + "\\Pictures\\";//\\default.jpg";//TAG: pictures access
-                WPFMessageBox.Show("The directory we're trying to access images in is: " + imagePath);
+                //WPFMessageBox.Show("The directory we're trying to access images in is: " + imagePath);
                 //imagePath = @"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures"; //TAG: pictures access
             }
             catch(DirectoryNotFoundException nf)

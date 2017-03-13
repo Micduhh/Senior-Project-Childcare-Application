@@ -68,7 +68,6 @@
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_Print" Content="_Print" HorizontalAlignment="Left" Margin="286,599,0,0" VerticalAlignment="Top" Width="75" TabIndex="4" Click="btn_Print_Click"/>
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_Save" Content="_Save" HorizontalAlignment="Left" Margin="366,599,0,0" VerticalAlignment="Top" Width="75" TabIndex="4" Click="btn_Save_Click"/>
             <Button Style="{DynamicResource GlassButton}" x:Name="btn_GetCurrentDay" Content="Current _Day Report" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Width="184" Click="btn_GetCurrentDay_Click"  TabIndex="0"/>
-            <Button Style="{DynamicResource GlassButton}" x:Name="btn_GetSpecificDay" Content="Specific _Day Report" HorizontalAlignment="Left" Margin="199,3,0,0" VerticalAlignment="Top" Width="184" Click="btn_GetSpecificDay_Click" TabIndex="0"/>
 
         </Grid>
     </Border>

@@ -48,15 +48,19 @@ namespace AdminTools {
                 String allowanceID = "";
                 DataRowView selectedFile = (DataRowView)dta_GuardianList.SelectedItem;
                 allowanceID = Convert.ToString(selectedFile.Row.ItemArray[2]);
-
-                this.guardianID = conDB.GetGuardianID(allowanceID);
-                string imageLink = parentDB.GetGuardianImagePath(this.guardianID);
-                if (imageLink != null) {
-                    ImageBrush ib = new ImageBrush();
-                    ib.ImageSource = new BitmapImage(new Uri(imageLink, UriKind.Relative));
-                    cnv_GuardianPic.Background = ib;
-                    cnv_GuardianPic.Visibility = System.Windows.Visibility.Visible;
+                try
+                {
+                    this.guardianID = conDB.GetGuardianID(allowanceID);
+                    string imageLink = parentDB.GetGuardianImagePath(this.guardianID);
+                    if (imageLink != null)
+                    {
+                        ImageBrush ib = new ImageBrush();
+                        ib.ImageSource = new BitmapImage(new Uri(imageLink, UriKind.Relative));
+                        cnv_GuardianPic.Background = ib;
+                        cnv_GuardianPic.Visibility = System.Windows.Visibility.Visible;
+                    }
                 }
+                catch (Exception) { }
             }
         }
 
