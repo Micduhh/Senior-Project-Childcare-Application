@@ -371,14 +371,6 @@ namespace AdminTools {
                             + " Check Out: " + row["Check Out"]
                             + " Total: " + row["Total"];
                             writer.WriteLine("\n" + resultBuilder + "\n");
-
-
-
-                            /*
-                            DataRow row = this.table.Rows[i];
-                            var cols = row.GetChildRows()
-                            string info = row["Event Type"];
-                            */
                         }
                     }
                 }
@@ -399,11 +391,7 @@ namespace AdminTools {
                     if (fs != null)
                         fs.Dispose();
                 }
-            }
-            else
-            {
-                WPFMessageBox.Show("dialog.ShowDialog() == false");
-            }         
+            }   
         }
     }
 }

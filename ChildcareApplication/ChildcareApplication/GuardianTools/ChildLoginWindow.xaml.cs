@@ -69,51 +69,38 @@ namespace GuardianTools {
 
         public Image BuildImage(string path, int size) {
             Image image = new Image();
+            ImageBrush imageBrush = null;
             image.Width = size;
-            try {
-                BitmapImage bitmapImage = new BitmapImage();
-                var fileInfo = new FileInfo(@"" + path);
+            BitmapImage bitmapImage = new BitmapImage();
+
+            var fileInfo = new FileInfo(@"" + path);
+
+            if (fileInfo.Exists)
+            {
                 bitmapImage.BeginInit();
                 bitmapImage.UriSource = new Uri(fileInfo.FullName);
                 bitmapImage.DecodePixelWidth = size;
                 bitmapImage.DecodePixelHeight = size;
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
-            } catch (System.IO.FileNotFoundException) {
-                BitmapImage bitmapImage = new BitmapImage();
-                var fileInfo = new FileInfo(@"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures/default.jpg"); //TAG: pictures access
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri(fileInfo.FullName);
-                bitmapImage.DecodePixelWidth = size;
-                bitmapImage.DecodePixelHeight = size;
-                bitmapImage.EndInit();
-                image.Source = bitmapImage;
-            } catch (System.IO.DirectoryNotFoundException) {
-                
-                BitmapImage bitmapImage = new BitmapImage();
-                ImageBrush ib = new ImageBrush();
+            }
+            else
+            {
+                imageBrush = new ImageBrush();
+
                 try
                 {
-                    var fileInfo = new FileInfo(@"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures/default.jpg"); //TAG: pictures access
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri(fileInfo.FullName);
-                    bitmapImage.DecodePixelWidth = size;
-                    bitmapImage.DecodePixelHeight = size;
-                    bitmapImage.EndInit();//
-                    image.Source = bitmapImage;
-                }
-                catch(Exception)
-                {
-                    //New method:                            
-                    string currDir = Directory.GetCurrentDirectory();
                     string resultDir = getGreatGrandParent();
-                    string imageDir = resultDir + "\\Pictures\\default.jpg";
-                    image.Source = new BitmapImage(new Uri(@"" + imageDir, UriKind.Relative));
+                    string imageDir = $@"{resultDir}\Pictures\default.jpg";
+                    imageBrush.ImageSource = new BitmapImage(new Uri(imageDir, UriKind.Relative));
                 }
-                
-            } catch (Exception) {
-                WPFMessageBox.Show("Unable to load photo for unknown reason.");
+                catch (Exception)
+                {
+                    string defaultDir = ChildcareApplication.Properties.Resources.defaultimage.ToString();
+                    imageBrush.ImageSource = new BitmapImage(new Uri(defaultDir, UriKind.Relative));
+                }
             }
+
             return image;
         }
 
@@ -136,7 +123,8 @@ namespace GuardianTools {
             }
         }
 
-        private void btn_CheckOut_Click(object sender, RoutedEventArgs e) {
+        private void btn_CheckOut_Click(object sender, RoutedEventArgs e)
+        {
             TransactionDB transDB = new TransactionDB();
             if (lst_CheckOutBox.SelectedItem != null) {
                 string childID = ((Child)lst_CheckOutBox.SelectedItem).ID;
