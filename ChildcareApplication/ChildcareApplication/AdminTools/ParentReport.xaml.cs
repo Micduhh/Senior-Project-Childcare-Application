@@ -202,7 +202,7 @@ namespace AdminTools {
             if (File.Exists(parentInfo.GetPhotoPath(txt_GuardianID.Text))) {
                 cnv_ParentIcon.Background = new ImageBrush(new BitmapImage(new Uri(parentInfo.GetPhotoPath(txt_GuardianID.Text), UriKind.Relative)));
             } else {
-                cnv_ParentIcon.Background = new ImageBrush(new BitmapImage(new Uri(@"" + "C:/Users/Public/Documents" + "/Childcare Application/Pictures/default.jpg", UriKind.Relative)));
+                cnv_ParentIcon.Background = new ImageBrush(new BitmapImage(new Uri(ChildcareApplication.Properties.Resources.defaultimage.ToString(), UriKind.Relative)));
             }
 
             lbl_Name.Content = parentInfo.GetParentName(txt_GuardianID.Text);
